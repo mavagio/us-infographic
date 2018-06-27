@@ -18,6 +18,8 @@ import {routing} from "./app.routing";
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import {AuthGuard} from "../auth/auth.guard";
 import {AuthInterceptor} from "../auth/auth-interceptor.service";
+import {GoogleChartComponent} from "./google-chart/google-chart.component";
+
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import {AuthInterceptor} from "../auth/auth-interceptor.service";
     HomeComponent,
     ProfileComponent,
     PageNotFoundComponent,
+    GoogleChartComponent,
   ],
   imports: [
     BrowserModule,

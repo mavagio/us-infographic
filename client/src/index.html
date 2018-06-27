@@ -5,11 +5,9 @@
   <title>Client</title>
   <title>Node Authentication</title>
   <script src="https://www.gstatic.com/charts/loader.js"></script>
-  <script>
-    // !important: You want to give this variable(var googleLoaded = false;). This is used to run multiple chart in your jade.
-    var googleLoaded = false;
-    // !important: Define which chart packages to preload.Because this package uses ChartWrappers you can use any chart type that Google supports, but if it // isn't loaded it will load it on demand.
-    var googleChartsPackagesToLoad = ['geochart'];
+  <script type="text/javascript">
+    // Load the Visualization API and the corechart package.
+    google.charts.load('current', {'packages':['corechart']});
   </script>
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
