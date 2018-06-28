@@ -10,6 +10,7 @@ export class GoogleChartComponent implements OnInit, OnChanges {
   @Input('chartType') public chartType:string;
   @Input('chartOptions') public chartOptions: Object;
   @Input('chartData') public chartData: Object;
+  @Input('updateGeoMap') public updateGeoMap: boolean;
 
   constructor(public element: ElementRef) {
     this._element = this.element.nativeElement;
@@ -20,6 +21,7 @@ export class GoogleChartComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log("change detected");
     this.render();
   }
 
@@ -27,6 +29,7 @@ export class GoogleChartComponent implements OnInit, OnChanges {
     setTimeout(() =>{
         google.charts.load('current', {'packages':['corechart']});
         setTimeout(() =>{
+          console.log(this.chartData);
           this.drawGraph(this.chartOptions,this.chartType,this.chartData,this._element)
         },1);
       },1

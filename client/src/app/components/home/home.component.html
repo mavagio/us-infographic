@@ -1,7 +1,10 @@
+
 <div class="container">
+
   <div class="jumbotron text-center">
-    <h2>  Map Chart</h2>
-    <div id="map_chart" [chartData]="map_ChartData" [chartOptions] = "map_ChartOptions" chartType="GeoChart" GoogleChart></div>
+    <app-search></app-search>
+    <div id="map_chart" [updateGeoMap] = "updateGeoMap" [chartData]="map_ChartData" [chartOptions] = "map_ChartOptions" chartType="GeoChart" GoogleChart></div>
   </div>
   <button class="btn btn-warning btn-lg" (click)="addData()">MoreData</button>
+  <button class="btn btn-warning btn-lg" (click)="zoomInState()">ZoomNy</button>
 </div>

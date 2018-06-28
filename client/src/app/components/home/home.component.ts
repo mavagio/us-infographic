@@ -16,15 +16,16 @@ export class HomeComponent implements OnInit, OnChanges{
 
   constructor() { }
 
+  public updateGeoMap = true;
+
   public map_ChartData = [
     ['State', 'Popularity'],
     ['Georgia', 200],
     ['Alabama', 300],
     ['New Mexico', 400],
-    ['Canada', 500],
     ['TX', 401],
     ['California', 1000],
-    ['IA', 700]
+    ['IA', 700],
   ];
 
   public map_ChartOptions = {
@@ -38,17 +39,16 @@ export class HomeComponent implements OnInit, OnChanges{
   };
 
   public addData() {
-    this.map_ChartData = [
-      ['State', 'Popularity'],
-      ['Alabama', 3000],
-      ['New Mexico', 400],
-      ['Canada', 500],
-      ['Texas', 600],
-      ['California', 3000],
-      ['IA', 700]
-    ];
+    this.map_ChartData.push(['New York', 1000]);
+    this.renderMap();
+  }
 
-    this.map_ChartData.push(['Georgia', 200]);
-    console.log(this.map_ChartData);
+  public zoomInState(): void {
+    this.map_ChartOptions['region'] = 'US-CA';
+    this.renderMap();
+  }
+
+  private renderMap(): void {
+    this.updateGeoMap = !this.updateGeoMap;
   }
 }
