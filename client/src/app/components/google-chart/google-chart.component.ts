@@ -21,7 +21,6 @@ export class GoogleChartComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("change detected");
     this.render();
   }
 
@@ -29,7 +28,6 @@ export class GoogleChartComponent implements OnInit, OnChanges {
     setTimeout(() =>{
         google.charts.load('current', {'packages':['corechart']});
         setTimeout(() =>{
-          console.log(this.chartData);
           this.drawGraph(this.chartOptions,this.chartType,this.chartData,this._element)
         },1);
       },1
@@ -48,5 +46,6 @@ export class GoogleChartComponent implements OnInit, OnChanges {
       });
       wrapper.draw();
     }
+
   }
 }
