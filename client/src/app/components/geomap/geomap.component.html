@@ -1,0 +1,17 @@
+<mat-card>
+  <app-search></app-search>
+  <br/>
+  <div id="map_chart" [updateGeoMap] = "updateGeoMap" [chartData]="map_ChartData" [chartOptions] = "map_ChartOptions" chartType="GeoChart" GoogleChart></div>
+
+  <div class="row map-action-item">
+    <div class="col-sm-4">
+      <button mat-button color="primary" (click)="addData()">MoreData</button>
+    </div>
+    <div class="col-sm-4">
+      <button mat-button color="primary" (click)="zoomInState()">ZoomNy</button>
+    </div>
+    <div class="col-sm-4">
+      <button mat-button color="primary" (click)="zoomInState()">ZoomNy</button>
+    </div>
+  </div>
+</mat-card>

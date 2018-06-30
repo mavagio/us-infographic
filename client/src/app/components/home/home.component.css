@@ -1,3 +1,10 @@
 .right-col mat-card {
   margin-bottom: 10px;
 }
+
+.map-action-item button {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+
+}

@@ -32,6 +32,7 @@ import {
   MatStepperModule, MatTableModule,
 } from '@angular/material';
 import { SearchComponent } from './search/search.component';
+import { GeomapComponent } from './geomap/geomap.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { SearchComponent } from './search/search.component';
     PageNotFoundComponent,
     GoogleChartComponent,
     SearchComponent,
+    GeomapComponent,
   ],
   imports: [
     BrowserModule,
