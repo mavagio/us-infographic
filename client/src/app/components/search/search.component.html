@@ -3,7 +3,7 @@
     <input #mainSearchInput matInput placeholder="State" aria-label="State" [matAutocomplete]="auto" [formControl]="stateCtrl">
     <mat-autocomplete #auto="matAutocomplete">
       <mat-option *ngFor="let state of filteredStates | async" [value]="state.name" (onSelectionChange)="stateClicked(state)">
-        <img class="example-option-img" aria-hidden src="http://flags.ox3.in/svg/us/{{state.id}}.svg" height="20">
+        <img class="example-option-img" aria-hidden src="http://flags.ox3.in/svg/us/{{state.id}}.svg" height="25">
         <span>{{state.name}}</span> |
         <small>Population: {{state.population}}</small>
       </mat-option>

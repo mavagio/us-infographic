@@ -1,3 +1,7 @@
+body{
+  font-family: "Roboto" !important;
+}
+
 mat-card {
   text-align: center;
 }
@@ -6,7 +10,27 @@ mat-card {
   cursor: pointer;
 }
 
-h3{
+.map-title{
   font-family: "Roboto";
-  color: grey;
+  color: #757575;
+  margin-top: 30px;
+  font-weight: 300;
+}
+
+.map-info {
+  font-family: "Roboto";
+  color: #9E9E9E;
+  font-weight: 300;
+}
+
+.toolbar-flex {
+  flex: 1 0.5 auto;
+}
+
+.centered {
+  margin: 0 auto;
+}
+
+mat-tab button {
+  margin: 10px;
 }

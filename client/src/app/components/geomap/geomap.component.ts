@@ -11,6 +11,7 @@ import {State} from "../../models/state";
 })
 export class GeomapComponent implements OnInit {
 
+  public selectedStateId: string;
   private stateIdName: any[];
   public statesNameMapping: Object;
   public statesPopulationByAgeGroups: Object;
@@ -25,6 +26,7 @@ export class GeomapComponent implements OnInit {
   public searchComponentStateData: State[] = [];
 
   public map_ChartOptions: Object;
+
   constructor(private usInfographicsService: UsInfographicsService) {
     this.generateMapOption();
   }
@@ -38,7 +40,7 @@ export class GeomapComponent implements OnInit {
         console.log(this.statesNameMapping);
 
         this.stateIdName = this.objectToArray(this.statesNameMapping);
-        this.stateNameStateCode = this.createStateCodeNameMappingToStateCode(this.statesNameMapping);
+        this.stateNameStateCode = GeomapComponent.createStateCodeNameMappingToStateCode(this.statesNameMapping);
         console.log(this.stateNameStateCode);
         this.resetGeoMapData(this.stateIdName);
         this.generateMapOption();
@@ -160,31 +162,37 @@ export class GeomapComponent implements OnInit {
   }
 
   stateSelected(stateId) {
-    stateId =  stateId.toUpperCase();
+    stateId = stateId.toUpperCase();
+    this.selectedStateId = stateId;
     this.hightlightSelectedState(stateId);
     this.zoomInState(stateId);
   }
 
   private hightlightSelectedState(stateId) {
-    this.map_ChartData = [['State', 'Population'], ['US-'+stateId, this.populationAsAnObject[stateId]]];
+    this.map_ChartData = [['State', 'Population'], ['US-' + stateId, this.populationAsAnObject[stateId]]];
     console.log(this.map_ChartData);
     this.renderMap();
   }
 
   public zoomInState(stateId: string): void {
-    this.map_ChartOptions['region'] = 'US-'+stateId;
+    this.map_ChartOptions['region'] = 'US-' + stateId;
     this.renderMap();
   }
 
-  private objectToArray(obj: any): any[] {
-    var result = Object.keys(obj).map(function(key) {
-      return [key, obj[key]];
-    });
-    return result;
+  public refresh(): void {
+    this.resetGeoMapData(this.stateIdName);
+    this.generateMapOption();
+    this.selectedStateId = null;
   }
 
-  private createStateCodeNameMappingToStateCode(obj): object{
-    return Object.assign({}, ...Object.entries(obj).map(([a,b]) => ({ [b]: a, [a]: a})));
+  private objectToArray(obj: any): any[] {
+    return Object.keys(obj).map(function (key) {
+      return [key, obj[key]];
+    });
+  }
+
+  private static createStateCodeNameMappingToStateCode(obj: any): any {
+    return Object.assign({}, ...Object.entries(obj).map(([a, b]) => ({[b]: a, [a]: a})));
   }
 
   private renderMap(): void {
