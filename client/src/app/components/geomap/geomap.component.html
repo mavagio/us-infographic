@@ -3,24 +3,23 @@
   <mat-tab-group mat-stretch-tabs class="centered" (selectedTabChange)="onTabChange($event)">
     <mat-tab label="Overview">
       <h3 class="h3 map-title">Overview of {{map_ChartOptions['region']}}</h3>
+      <ng-container  *ngIf="true; then info_panel"></ng-container>
     </mat-tab>
     <mat-tab label="Population">
       <h3 class="h3 map-title">Population of {{map_ChartOptions['region']}}</h3>
+      <ng-container  *ngIf="true; then info_panel"></ng-container>
     </mat-tab>
     <mat-tab label="Jobs">
       <h3 class="h3 map-title">Jobs of {{map_ChartOptions['region']}}</h3>
+      <ng-container  *ngIf="true; then info_panel"></ng-container>
     </mat-tab>
   </mat-tab-group>
-
-  <!--<ng-container *ngIf="true; then info_panel else info_panel"></ng-container>-->
-
-  <!--<ng-template #info_panel>-->
-    <!--<h4 *ngIf="!selectedStateId" class="h4 map-info">Select a state for more information</h4>-->
-    <!--<button *ngIf="selectedStateId" color="primary" mat-button (click)="refresh()">-->
-      <!--<mat-icon aria-label="Example icon-button with a heart icon">refresh</mat-icon>-->
-    <!--</button>-->
-  <!--</ng-template>-->
-
+  <ng-template #info_panel>
+    <h4 *ngIf="!selectedStateId" class="h4 map-info">Select a state for more information</h4>
+    <button *ngIf="selectedStateId" color="primary" mat-button (click)="refresh()">
+      <mat-icon aria-label="Example icon-button with a heart icon">refresh</mat-icon>
+    </button>
+  </ng-template>
   <div *ngIf="map_ChartData" id="map_chart" class="map-style" (selectedRegionEvent)="stateSelected($event)"
        [stateNameStateCode]="stateNameStateCode" [updateGeoMap]="updateGeoMap" [chartData]="map_ChartData"
        [chartOptions]="map_ChartOptions" chartType="GeoChart" GoogleChart></div>
