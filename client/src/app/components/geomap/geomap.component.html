@@ -11,7 +11,7 @@
       <h2>Jobs in US</h2>
     </mat-tab>
   </mat-tab-group>
-  <div id="map_chart" class = "map-style" (selectedRegionEvent) = "stateSelected($event)" [updateGeoMap] = "updateGeoMap" [chartData]="map_ChartData" [chartOptions] = "map_ChartOptions" chartType="GeoChart" GoogleChart></div>
+  <div *ngIf="map_ChartData" id="map_chart" class = "map-style" (selectedRegionEvent) = "stateSelected($event)" [stateNameStateCode] = "stateNameStateCode" [updateGeoMap] = "updateGeoMap" [chartData]="map_ChartData" [chartOptions] = "map_ChartOptions" chartType="GeoChart" GoogleChart></div>
   <br/>
   <app-search (selectedRegionEvent) =  "stateSelected($event)" [states] = "searchComponentStateData"  ></app-search>
   <br/>

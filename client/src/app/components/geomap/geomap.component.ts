@@ -19,21 +19,11 @@ export class GeomapComponent implements OnInit {
   public updateGeoMap = true;
   public map_ChartData: any;
 
+  public stateNameStateCode: any;
+
   public searchComponentStateData: State[] = [];
 
-  public map_ChartOptions = {
-    region: 'US',
-    displayMode: 'region',
-    resolution: 'provinces',
-    legend: 'none',
-    enableRegionInteractivity: 'true',
-    sizeAxis: {minSize: 1, maxSize: 10},
-    colorAxis: {minValue: 1000000, maxValue: 32000000, colors: ['#B92B3D']},
-    width: '100%',
-    aggregationTarget: 'category',
-    defaultColor: '#f5f5f5',
-  };
-
+  public map_ChartOptions: Object;
   constructor(private usInfographicsService: UsInfographicsService) {
   }
 
@@ -46,10 +36,28 @@ export class GeomapComponent implements OnInit {
         console.log(this.statesNameMapping);
 
         this.stateIdName = this.objectToArray(this.statesNameMapping);
-        console.log(this.stateIdName);
+        this.stateNameStateCode = this.createStateCodeNameMappingToStateCode(this.statesNameMapping);
+        console.log(this.stateNameStateCode);
         this.resetGeoMapData(this.stateIdName);
+        this.generateMapOption();
       });
     })()
+  }
+
+  private generateMapOption(): void {
+    this.map_ChartOptions = {
+      region: 'US',
+      displayMode: 'region',
+      resolution: 'provinces',
+      legend: 'none',
+      enableRegionInteractivity: 'true',
+      sizeAxis: {minSize: 1, maxSize: 10},
+      colorAxis: {minValue: 1000000, maxValue: 32000000, colors: ['#B92B3D']},
+      width: '100%',
+      aggregationTarget: 'category',
+      defaultColor: '#f5f5f5',
+    };
+    this.renderMap();
   }
 
   public addPopulationDataToGeoMap() {
@@ -132,13 +140,16 @@ export class GeomapComponent implements OnInit {
     switch (event.index) {
       case 0: { //Overview
         this.resetGeoMapData(this.stateIdName);
+        this.generateMapOption();
         break;
       }
       case 1: { //Population
+        this.generateMapOption();
         this.addPopulationDataToGeoMap();
         break;
       }
       case 2: { //Jobs
+        this.generateMapOption();
         this.addPopulationDataToGeoMap();
         break;
       }
@@ -146,9 +157,15 @@ export class GeomapComponent implements OnInit {
     }
   }
 
-  stateSelected(event) {
-    console.log('evnt happend', event);
-    this.zoomInState(event)
+  stateSelected(stateId) {
+    stateId =  stateId.toUpperCase();
+    this.zoomInState(stateId);
+    this.hightlightSelectedState(stateId);
+  }
+
+  private hightlightSelectedState(stateId) {
+    this.map_ChartData = [['State', 'Population'], [stateId, 35000000]];
+    this.renderMap();
   }
 
   public zoomInState(stateId: string): void {
@@ -161,6 +178,10 @@ export class GeomapComponent implements OnInit {
       return [key, obj[key]];
     });
     return result;
+  }
+
+  private createStateCodeNameMappingToStateCode(obj): object{
+    return Object.assign({}, ...Object.entries(obj).map(([a,b]) => ({ [b]: a, [a]: a})));
   }
 
   private renderMap(): void {

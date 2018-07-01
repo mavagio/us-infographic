@@ -12,6 +12,8 @@ export class GoogleChartComponent implements OnInit, OnChanges {
   @Input('chartData') public chartData: Object;
   @Input('updateGeoMap') public updateGeoMap: boolean;
 
+  @Input('stateNameStateCode') public stateNameStateCode: any;
+
   @Output('selectedRegionEvent') selectedRegion = new EventEmitter<string>();
   constructor(public element: ElementRef) {
     this._element = this.element.nativeElement;
@@ -30,23 +32,25 @@ export class GoogleChartComponent implements OnInit, OnChanges {
       this.drawGraph(this.chartOptions,this.chartType,this.chartData,this._element)
   }
 
-  drawGraph (chartOptions,chartType,chartData,ele) {
+  drawGraph(chartOptions, chartType, chartData, ele) {
     google.charts.setOnLoadCallback(drawChart);
     let _this = this;
+
     function drawChart() {
       let wrapper;
       wrapper = new google.visualization.ChartWrapper({
         chartType: chartType,
-        dataTable:chartData ,
-        options:chartOptions || {},
+        dataTable: chartData,
+        options: chartOptions || {},
         containerId: ele.id
       });
 
-      if (_this.chartType === 'GeoChart'){
-        google.visualization.events.addListener(wrapper, 'select', function() {
+      if (_this.chartType === 'GeoChart') {
+        google.visualization.events.addListener(wrapper, 'select', function () {
           let selection = wrapper.getChart().getSelection()[0];
-          let state = chartData[selection.row+1];
-          _this.selectedRegion.emit(state[0]);
+          let state = chartData[selection.row + 1];
+          console.log(_this.stateNameStateCode);
+          _this.selectedRegion.emit(_this.stateNameStateCode[state[0]]);
         });
       }
 
