@@ -5,3 +5,8 @@ mat-card {
 .map-style {
   cursor: pointer;
 }
+
+h3{
+  font-family: "Roboto";
+  color: grey;
+}

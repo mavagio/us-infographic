@@ -16,6 +16,7 @@ export class GeomapComponent implements OnInit {
   public statesPopulationByAgeGroups: Object;
   public statesJobs: Object;
   public statesTotalPopulationByName: any;
+  private populationAsAnObject: Object;
   public updateGeoMap = true;
   public map_ChartData: any;
 
@@ -25,14 +26,15 @@ export class GeomapComponent implements OnInit {
 
   public map_ChartOptions: Object;
   constructor(private usInfographicsService: UsInfographicsService) {
+    this.generateMapOption();
   }
 
   ngOnInit() {
     (async () => {
       await this.loadInfographicsData().then(() => {
-        let populationAsAnObject = GeomapComponent.getAllStatesTotalPopulation(this.statesPopulationByAgeGroups);
-        this.statesTotalPopulationByName = this.mapStateNameWithPopulation(populationAsAnObject, this.statesNameMapping);
-        this.searchComponentStateData = this.mapStateNamePopulationStateCode(populationAsAnObject, this.statesNameMapping);
+        this.populationAsAnObject = GeomapComponent.getAllStatesTotalPopulation(this.statesPopulationByAgeGroups);
+        this.statesTotalPopulationByName = this.mapStateNameWithPopulation(this.populationAsAnObject, this.statesNameMapping);
+        this.searchComponentStateData = this.mapStateNamePopulationStateCode(this.populationAsAnObject, this.statesNameMapping);
         console.log(this.statesNameMapping);
 
         this.stateIdName = this.objectToArray(this.statesNameMapping);
@@ -159,12 +161,13 @@ export class GeomapComponent implements OnInit {
 
   stateSelected(stateId) {
     stateId =  stateId.toUpperCase();
-    this.zoomInState(stateId);
     this.hightlightSelectedState(stateId);
+    this.zoomInState(stateId);
   }
 
   private hightlightSelectedState(stateId) {
-    this.map_ChartData = [['State', 'Population'], [stateId, 35000000]];
+    this.map_ChartData = [['State', 'Population'], ['US-'+stateId, this.populationAsAnObject[stateId]]];
+    console.log(this.map_ChartData);
     this.renderMap();
   }
 
