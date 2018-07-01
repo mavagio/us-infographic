@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UsInfographicsService} from "../../services/us-infographics.service";
+import { MatTabChangeEvent } from '@angular/material';
+
 
 @Component({
   selector: 'app-geomap',
@@ -16,9 +18,7 @@ export class GeomapComponent implements OnInit {
 
   public updateGeoMap = true;
 
-  public map_ChartData:any = [
-    ['State', 'Popularity'],
-  ];
+  public map_ChartData:any;
 
   public map_ChartOptions = {
     region: 'US',
@@ -27,12 +27,14 @@ export class GeomapComponent implements OnInit {
     legend: 'none',
     enableRegionInteractivity: 'true',
     sizeAxis: {minSize:1,  maxSize: 10},
-    colorAxis: {minValue: 1, maxValue:10,  colors: ['#B92B3D']},
+    colorAxis: {minValue: 1000000, maxValue:35000000,  colors: ['#B92B3D']},
     width: '100%',
     aggregationTarget: 'category',
   };
 
-  constructor(private usInfographicsService: UsInfographicsService) { }
+  constructor(private usInfographicsService: UsInfographicsService) {
+    this.resetGeoMapData();
+  }
 
   ngOnInit() {
     (async () => {
@@ -45,23 +47,22 @@ export class GeomapComponent implements OnInit {
     })()
   }
 
-
-
-  public addData() {
+  public addPopulationDataToGeoMap() {
     this.map_ChartData =  this.map_ChartData.concat(this.statesTotalPopulationByName);
     console.log(this.map_ChartData)
     this.renderMap();
+  }
+
+  public resetGeoMapData() {
+    this.map_ChartData = [
+      ['State', 'Popularity'],
+    ];
   }
 
   public zoomInState(): void {
     this.map_ChartOptions['region'] = 'US-CA';
     this.renderMap();
   }
-
-  private renderMap(): void {
-    this.updateGeoMap = !this.updateGeoMap;
-  }
-
 
   async loadInfographicsData(): Promise<any> {
     await new Promise<void>(resolve => {
@@ -95,28 +96,19 @@ export class GeomapComponent implements OnInit {
   }
 
   private mapStateNameWithPopulation(statesPopulations, statesNamesMapping): any[]{
+    console.log("inside the state place");
+    console.log(statesPopulations);
+    console.log(statesNamesMapping);
+
+
     let statesNamesAndPopulations = [];
-    for(let stateName of statesNamesMapping){
-      let stateFullName = stateName[1];
-      let stateTotalPopulation = statesPopulations[stateName[0]];
+    for(let stateName in statesNamesMapping){
+      console.log(stateName);
+      let stateFullName = statesNamesMapping[stateName]
+      let stateTotalPopulation = statesPopulations[stateName];
       statesNamesAndPopulations.push([stateFullName, stateTotalPopulation]);
     }
     return statesNamesAndPopulations;
-  }
-
-  private static getTotalStatePopulation(stateId, statesPopulation): number {
-    let statePopulation = this.findStatePopulation(stateId, statesPopulation);
-    let totalPopulation = this.sumObjectProperties(statePopulation);
-    return totalPopulation;
-  }
-
-  private static findStatePopulation(stateId, statesPopulation): any {
-    for(let statePopulation of statesPopulation) {
-      if(statePopulation['State'] === stateId) {
-        statePopulation['State'] = 0;
-        return statePopulation;
-      }
-    }
   }
 
   private static sumObjectProperties( obj ): number {
@@ -126,4 +118,34 @@ export class GeomapComponent implements OnInit {
       }, 0 );
   }
 
+  /**
+   * tab 0 - overview
+   * tab 1 - population
+   * tab 2 - jobs
+   * */
+  onTabChange(event: MatTabChangeEvent) {
+    console.log('event => ', event);
+    console.log('index => ', event.index);
+    console.log('tab => ', event.tab);
+
+    switch (event.index) {
+      case 1: {
+        this.addPopulationDataToGeoMap();
+        break;
+      }
+      case 2: {
+        this.zoomInState();
+        break;
+      }
+      case 0: {
+        this.resetGeoMapData();
+        break;
+      }
+    }
+
+  }
+
+  private renderMap(): void {
+    this.updateGeoMap = !this.updateGeoMap;
+  }
 }

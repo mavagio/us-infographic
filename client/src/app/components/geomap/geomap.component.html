@@ -1,17 +1,18 @@
 <mat-card>
+
+  <mat-tab-group (selectedTabChange)="onTabChange($event)">
+    <mat-tab label="Overview">
+      <h2>Overview of US</h2>
+    </mat-tab>
+    <mat-tab label="Population">
+      <h2>Population of US</h2>
+    </mat-tab>
+    <mat-tab label="Jobs">
+      <h2>Jobs in US</h2>
+    </mat-tab>
+  </mat-tab-group>
+  <div id="map_chart" [updateGeoMap] = "updateGeoMap" [chartData]="map_ChartData" [chartOptions] = "map_ChartOptions" chartType="GeoChart" GoogleChart></div>
+  <br/>
   <app-search></app-search>
   <br/>
-  <div id="map_chart" [updateGeoMap] = "updateGeoMap" [chartData]="map_ChartData" [chartOptions] = "map_ChartOptions" chartType="GeoChart" GoogleChart></div>
-
-  <div class="row map-action-item">
-    <div class="col-sm-4">
-      <button mat-button color="primary" (click)="addData()">MoreData</button>
-    </div>
-    <div class="col-sm-4">
-      <button mat-button color="primary" (click)="zoomInState()">ZoomNy</button>
-    </div>
-    <div class="col-sm-4">
-      <button mat-button color="primary" (click)="zoomInState()">ZoomNy</button>
-    </div>
-  </div>
 </mat-card>
