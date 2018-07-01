@@ -11,6 +11,7 @@ import {State} from "../../models/state";
 })
 export class GeomapComponent implements OnInit {
 
+  private stateIdName: any[];
   public statesNameMapping: Object;
   public statesPopulationByAgeGroups: Object;
   public statesJobs: Object;
@@ -30,10 +31,10 @@ export class GeomapComponent implements OnInit {
     colorAxis: {minValue: 1000000, maxValue: 32000000, colors: ['#B92B3D']},
     width: '100%',
     aggregationTarget: 'category',
+    defaultColor: '#f5f5f5',
   };
 
   constructor(private usInfographicsService: UsInfographicsService) {
-    this.resetGeoMapData();
   }
 
   ngOnInit() {
@@ -42,25 +43,24 @@ export class GeomapComponent implements OnInit {
         let populationAsAnObject = GeomapComponent.getAllStatesTotalPopulation(this.statesPopulationByAgeGroups);
         this.statesTotalPopulationByName = this.mapStateNameWithPopulation(populationAsAnObject, this.statesNameMapping);
         this.searchComponentStateData = this.mapStateNamePopulationStateCode(populationAsAnObject, this.statesNameMapping);
-        console.log(this.searchComponentStateData);
+        console.log(this.statesNameMapping);
+
+        this.stateIdName = this.objectToArray(this.statesNameMapping);
+        console.log(this.stateIdName);
+        this.resetGeoMapData(this.stateIdName);
       });
     })()
   }
 
   public addPopulationDataToGeoMap() {
-    this.map_ChartData = this.map_ChartData.concat(this.statesTotalPopulationByName);
+    this.map_ChartData = [['State', 'Population'], ...(this.statesTotalPopulationByName)];
     this.renderMap();
   }
 
-  public resetGeoMapData() {
+  public resetGeoMapData(stateFullNames: any) {
     this.map_ChartData = [
-      ['State', 'Population'],
+      ['Code', 'State'], ...stateFullNames
     ];
-    this.renderMap();
-  }
-
-  public zoomInState(): void {
-    this.map_ChartOptions['region'] = 'US-CA';
     this.renderMap();
   }
 
@@ -130,23 +130,37 @@ export class GeomapComponent implements OnInit {
 
   onTabChange(event: MatTabChangeEvent) {
     switch (event.index) {
-      case 1: { //Overview
+      case 0: { //Overview
+        this.resetGeoMapData(this.stateIdName);
+        break;
+      }
+      case 1: { //Population
         this.addPopulationDataToGeoMap();
         break;
       }
-      case 2: { //Population
-        this.zoomInState();
+      case 2: { //Jobs
+        this.addPopulationDataToGeoMap();
         break;
       }
-      case 0: { //Jobs
-        this.resetGeoMapData();
-        break;
-      }
+
     }
   }
 
-  mytest(event) {
+  stateSelected(event) {
     console.log('evnt happend', event);
+    this.zoomInState(event)
+  }
+
+  public zoomInState(stateId: string): void {
+    this.map_ChartOptions['region'] = 'US-'+stateId;
+    this.renderMap();
+  }
+
+  private objectToArray(obj: any): any[] {
+    var result = Object.keys(obj).map(function(key) {
+      return [key, obj[key]];
+    });
+    return result;
   }
 
   private renderMap(): void {

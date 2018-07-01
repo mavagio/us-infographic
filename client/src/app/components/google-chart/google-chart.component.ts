@@ -12,7 +12,7 @@ export class GoogleChartComponent implements OnInit, OnChanges {
   @Input('chartData') public chartData: Object;
   @Input('updateGeoMap') public updateGeoMap: boolean;
 
-  @Output('selectedRegionEvent') selectedRegion = new EventEmitter<object>();
+  @Output('selectedRegionEvent') selectedRegion = new EventEmitter<string>();
   constructor(public element: ElementRef) {
     this._element = this.element.nativeElement;
   }
@@ -45,8 +45,8 @@ export class GoogleChartComponent implements OnInit, OnChanges {
       if (_this.chartType === 'GeoChart'){
         google.visualization.events.addListener(wrapper, 'select', function() {
           let selection = wrapper.getChart().getSelection()[0];
-          let label = chartData[selection.row+1];
-          _this.selectedRegion.emit(label);
+          let state = chartData[selection.row+1];
+          _this.selectedRegion.emit(state[0]);
         });
       }
 

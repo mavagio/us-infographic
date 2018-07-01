@@ -1,3 +1,7 @@
 mat-card {
   text-align: center;
 }
+
+.map-style {
+  cursor: pointer;
+}

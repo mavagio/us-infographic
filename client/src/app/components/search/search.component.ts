@@ -13,7 +13,7 @@ export class SearchComponent implements OnInit {
 
   @Input('states') public states: State[] = [];
 
-  @Output('selectedRegionEvent') public selectedRegionEvent = new EventEmitter<State>();
+  @Output('selectedRegionEvent') public selectedRegionEvent = new EventEmitter<string>();
   ngOnInit() {
     console.log(this.states);
     this.filteredStates = this.stateCtrl.valueChanges
@@ -50,7 +50,7 @@ export class SearchComponent implements OnInit {
   // ];
 
   public stateClicked(selectedState: State): void {
-    this.selectedRegionEvent.emit(selectedState);
+    this.selectedRegionEvent.emit(selectedState.id);
   }
 
   constructor() {
