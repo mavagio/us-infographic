@@ -1,4 +1,4 @@
-import {Directive, ElementRef, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 declare var google:any;
 declare var googleLoaded:any;
 @Directive({
@@ -12,6 +12,7 @@ export class GoogleChartComponent implements OnInit, OnChanges {
   @Input('chartData') public chartData: Object;
   @Input('updateGeoMap') public updateGeoMap: boolean;
 
+  @Output('selectedRegionEvent') selectedRegion = new EventEmitter<object>();
   constructor(public element: ElementRef) {
     this._element = this.element.nativeElement;
   }
@@ -25,20 +26,14 @@ export class GoogleChartComponent implements OnInit, OnChanges {
   }
 
   private render() {
-    setTimeout(() =>{
       google.charts.load('current', {'packages':['corechart']});
-        setTimeout(() =>{
-          this.drawGraph(this.chartOptions,this.chartType,this.chartData,this._element)
-        },1);
-      },1
-    );
+      this.drawGraph(this.chartOptions,this.chartType,this.chartData,this._element)
   }
 
   drawGraph (chartOptions,chartType,chartData,ele) {
     google.charts.setOnLoadCallback(drawChart);
+    let _this = this;
     function drawChart() {
-
-
       let wrapper;
       wrapper = new google.visualization.ChartWrapper({
         chartType: chartType,
@@ -47,15 +42,15 @@ export class GoogleChartComponent implements OnInit, OnChanges {
         containerId: ele.id
       });
 
-      google.visualization.events.addListener(wrapper, 'select', function() {
-        let selection = wrapper.getChart().getSelection()[0];
-        console.log(selection);
-        console.log(chartData);
-        var label = chartData [selection.row+1];
-        console.log(label);
-      });
-      wrapper.draw();
+      if (_this.chartType === 'GeoChart'){
+        google.visualization.events.addListener(wrapper, 'select', function() {
+          let selection = wrapper.getChart().getSelection()[0];
+          let label = chartData[selection.row+1];
+          _this.selectedRegion.emit(label);
+        });
+      }
 
+      wrapper.draw();
     }
 
   }

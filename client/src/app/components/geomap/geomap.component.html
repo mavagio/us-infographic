@@ -11,8 +11,8 @@
       <h2>Jobs in US</h2>
     </mat-tab>
   </mat-tab-group>
-  <div id="map_chart" [updateGeoMap] = "updateGeoMap" [chartData]="map_ChartData" [chartOptions] = "map_ChartOptions" chartType="GeoChart" GoogleChart></div>
+  <div id="map_chart"  (selectedRegionEvent) = "mytest($event)" [updateGeoMap] = "updateGeoMap" [chartData]="map_ChartData" [chartOptions] = "map_ChartOptions" chartType="GeoChart" GoogleChart></div>
   <br/>
-  <app-search></app-search>
+  <app-search (selectedRegionEvent) =  "mytest($event)" [states] = "searchComponentStateData"  ></app-search>
   <br/>
 </mat-card>
