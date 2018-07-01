@@ -41,15 +41,12 @@ export class GeomapComponent implements OnInit {
       await this.loadInfographicsData().then(()=>{
         let populationAsAnObject = GeomapComponent.getAllStatesTotalPopulation(this.statesPopulationByAgeGroups);
         this.statesTotalPopulationByName = this.mapStateNameWithPopulation(populationAsAnObject, this.statesNameMapping);
-        console.log(this.statesTotalPopulationByName);
-        console.log("I should be after")
       });
     })()
   }
 
   public addPopulationDataToGeoMap() {
     this.map_ChartData =  this.map_ChartData.concat(this.statesTotalPopulationByName);
-    console.log(this.map_ChartData)
     this.renderMap();
   }
 
@@ -57,6 +54,7 @@ export class GeomapComponent implements OnInit {
     this.map_ChartData = [
       ['State', 'Popularity'],
     ];
+    this.renderMap();
   }
 
   public zoomInState(): void {
@@ -96,14 +94,8 @@ export class GeomapComponent implements OnInit {
   }
 
   private mapStateNameWithPopulation(statesPopulations, statesNamesMapping): any[]{
-    console.log("inside the state place");
-    console.log(statesPopulations);
-    console.log(statesNamesMapping);
-
-
     let statesNamesAndPopulations = [];
     for(let stateName in statesNamesMapping){
-      console.log(stateName);
       let stateFullName = statesNamesMapping[stateName]
       let stateTotalPopulation = statesPopulations[stateName];
       statesNamesAndPopulations.push([stateFullName, stateTotalPopulation]);
@@ -118,31 +110,22 @@ export class GeomapComponent implements OnInit {
       }, 0 );
   }
 
-  /**
-   * tab 0 - overview
-   * tab 1 - population
-   * tab 2 - jobs
-   * */
-  onTabChange(event: MatTabChangeEvent) {
-    console.log('event => ', event);
-    console.log('index => ', event.index);
-    console.log('tab => ', event.tab);
 
+  onTabChange(event: MatTabChangeEvent) {
     switch (event.index) {
-      case 1: {
+      case 1: { //Overview
         this.addPopulationDataToGeoMap();
         break;
       }
-      case 2: {
+      case 2: { //Population
         this.zoomInState();
         break;
       }
-      case 0: {
+      case 0: { //Jobs
         this.resetGeoMapData();
         break;
       }
     }
-
   }
 
   private renderMap(): void {

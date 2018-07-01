@@ -1,4 +1,4 @@
-import {Directive, ElementRef, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Directive, ElementRef, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 declare var google:any;
 declare var googleLoaded:any;
 @Directive({
@@ -26,7 +26,7 @@ export class GoogleChartComponent implements OnInit, OnChanges {
 
   private render() {
     setTimeout(() =>{
-        google.charts.load('current', {'packages':['corechart']});
+      google.charts.load('current', {'packages':['corechart']});
         setTimeout(() =>{
           this.drawGraph(this.chartOptions,this.chartType,this.chartData,this._element)
         },1);
@@ -37,14 +37,25 @@ export class GoogleChartComponent implements OnInit, OnChanges {
   drawGraph (chartOptions,chartType,chartData,ele) {
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
-      var wrapper;
+
+
+      let wrapper;
       wrapper = new google.visualization.ChartWrapper({
         chartType: chartType,
         dataTable:chartData ,
         options:chartOptions || {},
         containerId: ele.id
       });
+
+      google.visualization.events.addListener(wrapper, 'select', function() {
+        let selection = wrapper.getChart().getSelection()[0];
+        console.log(selection);
+        console.log(chartData);
+        var label = chartData [selection.row+1];
+        console.log(label);
+      });
       wrapper.draw();
+
     }
 
   }
