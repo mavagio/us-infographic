@@ -19,16 +19,8 @@ export class HomeComponent implements OnInit {
   private stateArea: any;
 
   private populationStateCodeMapping: object;
-  public currentPopulationChartData: [];
-  public currentJobsChartData = [
-    ['Job', '%'],
-    ["agriculture", 60.0],
-    ["manufacturing", 0.0],
-    ["mining", 2.0],
-    ["trade", 30.0],
-    ["domestic service", 0.0],
-    ["professional service", 10.0]
-  ];
+  public currentPopulationChartData: any;
+  public currentJobsChartData: any;
 
 
   constructor(private usInfographicsService: UsInfographicsService) {
@@ -105,11 +97,11 @@ export class HomeComponent implements OnInit {
     this.populationStateCodeMapping = populationStateCodeMapping;
   }
 
-  private generatePopulationChartData(ageGroupPopulation): any[][] {
+  private generatePopulationChartData(ageGroupPopulation): any {
     return this.nestedObjectToArray(ageGroupPopulation, 'State');
   }
 
-  private generateJobsChartData(jobsData): any[][] {
+  private generateJobsChartData(jobsData): any {
     return this.nestedObjectToArray(jobsData, 'name')
   }
 
