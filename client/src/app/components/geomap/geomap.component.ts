@@ -42,18 +42,6 @@ export class GeomapComponent implements OnInit {
     this.generateDefaultMapOption();
   }
 
-  private static getAllStatesTotalPopulation(statesPopulations): any[] {
-    const allStatePopulations: any = {};
-    for (const statePopulation of statesPopulations) {
-      const currentState: string = statePopulation['State'];
-      const stateName = statePopulation['State'];
-      statePopulation['State'] = 0;
-      allStatePopulations[currentState] = this.sumObjectProperties(statePopulation);
-      statePopulation['State'] = stateName;
-    }
-    return allStatePopulations;
-  }
-
   ngOnInit() {
     (async () => {
       await this.loadInfographicsData().then(() => {
@@ -139,6 +127,17 @@ export class GeomapComponent implements OnInit {
     });
   }
 
+  private static getAllStatesTotalPopulation(statesPopulations: any): any[] {
+    const allStatePopulations: any = {};
+    for (const statePopulation of statesPopulations) {
+      const currentState: string = statePopulation['State'];
+      const stateName = statePopulation['State'];
+      statePopulation['State'] = 0;
+      allStatePopulations[currentState] = this.sumObjectProperties(statePopulation);
+      statePopulation['State'] = stateName;
+    }
+    return allStatePopulations;
+  }
 
   private mapStateNameWithPopulation(statesPopulations: any, statesNamesMapping: any): any[] {
     const statesNamesAndPopulations = [];
@@ -159,7 +158,7 @@ export class GeomapComponent implements OnInit {
     const statesNamesAndPopulations = [];
     for (const stateId in statesNamesMapping) {
       if (statesNamesMapping.hasOwnProperty(stateId)) {
-        const stateFullName = statesNamesMapping[stateId]
+        const stateFullName = statesNamesMapping[stateId];
         const stateTotalPopulation = statesPopulations[stateId];
         if (typeof  statesPopulations[stateId] === 'undefined') {
           continue;
@@ -187,17 +186,17 @@ export class GeomapComponent implements OnInit {
     this.currentTab = event;
     this.setSelectedStateId(null);
     switch (event) {
-      case 0: { //Overview
+      case 0: { // Overview
         this.resetGeoMapData(this.geoChartDataStateIdName);
         this.generateDefaultMapOption();
         break;
       }
-      case 1: { //Population
+      case 1: { // Population
         this.generateDefaultMapOption();
         this.setGeoMapToPopulationData();
         break;
       }
-      case 2: { //Jobs
+      case 2: { // Jobs
         this.generateDefaultMapOption();
         this.setGeoMapToUnemploymentData();
         break;
@@ -219,7 +218,7 @@ export class GeomapComponent implements OnInit {
       minValue: 1,
       maxValue: this.populationAsAnObject[stateId],
       colors: ['#3f51b5']
-    }
+    };
     this.renderMap();
   }
 
