@@ -6,7 +6,7 @@ declare var googleLoaded: any;
 @Directive({
   selector: '[GoogleChart]'
 })
-export class GoogleChartComponent implements OnInit, OnChanges {
+export class GoogleChartDirective implements OnInit, OnChanges {
 
   public _element: any;
   @Input('chartType') public chartType: string;
@@ -16,7 +16,7 @@ export class GoogleChartComponent implements OnInit, OnChanges {
 
   @Input('stateNameStateCode') public stateNameStateCode: any;
 
-  @Output('selectedRegionEvent') selectedRegion = new EventEmitter<string>();
+  @Output('selectedRegionEvent') selectedRegionEvent = new EventEmitter<string>();
 
   constructor(public element: ElementRef) {
     this._element = this.element.nativeElement;
@@ -32,12 +32,12 @@ export class GoogleChartComponent implements OnInit, OnChanges {
 
   private render() {
     google.charts.load('current', {'packages': ['corechart']});
-    this.drawGraph(this.chartOptions, this.chartType, this.chartData, this._element)
+    this.drawGraph(this.chartOptions, this.chartType, this.chartData, this._element);
   }
 
   drawGraph(chartOptions, chartType, chartData, ele) {
     google.charts.setOnLoadCallback(drawChart);
-    let _this = this;
+    const _this = this;
 
     function drawChart() {
       let wrapper;
@@ -50,9 +50,9 @@ export class GoogleChartComponent implements OnInit, OnChanges {
 
       if (_this.chartType === 'GeoChart') {
         google.visualization.events.addListener(wrapper, 'select', function () {
-          let selection = wrapper.getChart().getSelection()[0];
-          let state = chartData[selection.row + 1];
-          _this.selectedRegion.emit(_this.stateNameStateCode[state[0]]);
+          const selection = wrapper.getChart().getSelection()[0];
+          const state = chartData[selection.row + 1];
+          _this.selectedRegionEvent.emit(_this.stateNameStateCode[state[0]]);
         });
       }
 

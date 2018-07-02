@@ -244,10 +244,12 @@ export class GeomapComponent implements OnInit {
   }
 
   private static createStateCodeNameMappingToStateCode(obj: any): any {
-    let result = {};
-    for (let key in obj) {
-      result[obj[key]] = key;
-      result[key] = key;
+    const result = {};
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        result[obj[key]] = key;
+        result[key] = key;
+      }
     }
     return result;
   }

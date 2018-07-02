@@ -23,6 +23,17 @@ export class HomeComponent implements OnInit {
   public currentPopulationChartData: any;
   public currentJobsChartData: any;
 
+  public barChartOptions: object = {
+    title: 'Population by age groups',
+    legend: {position: 'none'},
+    colors: ['green', 'blue'],
+  };
+
+  public pichartoptions: object = {
+    title: 'State Jobs',
+    pieHole: 0.3,
+  };
+
 
   constructor(private usInfographicsService: UsInfographicsService) {
   }
@@ -32,7 +43,7 @@ export class HomeComponent implements OnInit {
       await this.loadInfographicsData().then(() => {
 
       });
-    })()
+    })();
   }
 
   async loadInfographicsData(): Promise<any> {
@@ -51,17 +62,6 @@ export class HomeComponent implements OnInit {
   private createJobDataForState(stateId): void {
     this.currentJobsChartData = [['Job', '%'], ...(this.allStatesJobsChartData[stateId])];
   }
-
-  public barChartOptions = {
-    title: 'Population by age groups',
-    legend: {position: 'none'},
-    colors: ['green', 'blue'],
-  };
-
-  public pichartoptions = {
-    title: 'State Jobs',
-    pieHole: 0.3,
-  };
 
   public stateSelected(stateId: string) {
     if (stateId === null) {
@@ -109,12 +109,12 @@ export class HomeComponent implements OnInit {
   }
 
   private generateJobsChartData(jobsData): any {
-    return this.nestedObjectToArray(jobsData, 'name')
+    return this.nestedObjectToArray(jobsData, 'name');
   }
 
   public nestedObjectToArray(obj: any, idName: string): object {
-    let nestedObject = Object.keys(obj).map(function (key) {
-      let objectArray = (GeomapComponent.objectToArray(obj[key]));
+    const nestedObject = Object.keys(obj).map(function (key) {
+      const objectArray = (GeomapComponent.objectToArray(obj[key]));
       objectArray.shift();
       return {[obj[key][idName]]: objectArray};
     });

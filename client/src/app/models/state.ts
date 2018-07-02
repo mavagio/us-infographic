@@ -3,5 +3,5 @@ export interface State {
   population: number;
   id: string;
   area?: number;
-  unemployment?:number;
+  unemployment?: number;
 }

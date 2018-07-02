@@ -16,7 +16,7 @@ import {routing} from "./app.routing";
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import {AuthGuard} from "../auth/auth.guard";
 import {AuthInterceptor} from "../auth/auth-interceptor.service";
-import {GoogleChartComponent} from "./google-chart/google-chart.component";
+import {GoogleChartDirective} from "./google-chart/google-chart.component";
 
 import {ReactiveFormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
@@ -45,7 +45,7 @@ import { ThousandPipe } from '../pipes/thousand.pipe';
     HomeComponent,
     ProfileComponent,
     PageNotFoundComponent,
-    GoogleChartComponent,
+    GoogleChartDirective,
     SearchComponent,
     GeomapComponent,
     MillionPipe,
