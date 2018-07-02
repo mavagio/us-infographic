@@ -2,34 +2,51 @@
 
   <div class="row">
     <div class="col-sm-7">
-      <app-geomap></app-geomap>
+      <app-geomap (selectedStateEvent)="stateSelected($event)"
+                  (stateJobsEvent)="setStateJobs($event)"
+                  (stateCodeToNameMappingEvent)="setStateCodeToNameMapping($event)"
+                  (statePopulationByAgeGroupEvent)="setStatePopulationByAgeGroup($event)"
+                  (populationAsAnObjectEvent) = "setPopulationStateCodeMapping($event)"
+      ></app-geomap>
     </div>
-    <div class="col-sm-5 right-col">
+    <ng-container *ngIf="!currentState; then state_not_chosen_panel"></ng-container>
+    <div *ngIf="currentState?.id" class="col-sm-5 right-col">
       <mat-card>
-        <h3 class="overview-title">State of North Dakota</h3>
+        <h3 class="overview-title">State of {{currentState?.name}}</h3>
         <div class="overview-container">
           <div class="float-left inline-block">
             <h5 class="overview-info-name">Population</h5>
-            <h4 class="overview-info">350k</h4>
+            <h4 class="overview-info">{{currentState?.population}}</h4>
             <h5 class="overview-info-name">Area</h5>
             <h4 class="overview-info">400km<sup>2</sup></h4>
           </div>
           <div class="wrapper-right-col">
             <div class="float-right inline-block">
-              <img class="example-option-img" aria-hidden src="http://flags.ox3.in/svg/us/tx.svg">
+              <img class="example-option-img" aria-hidden src="http://flags.ox3.in/svg/us/{{currentState['id']}}.svg">
             </div>
           </div>
         </div>
       </mat-card>
       <mat-card>
-        <div id="histogram_chart" [updateGeoMap]="true" [chartData]="populationData" [chartOptions]="barChartOptions"
+        <div id="histogram_chart" [updateGeoMap]="true" [chartData]="currentPopulationChartData"
+             [chartOptions]="barChartOptions"
              chartType="Bar" GoogleChart></div>
       </mat-card>
       <mat-card>
-        <div id="pie_chart" [updateGeoMap]="true" [chartData]="jobsData" [chartOptions]="pichartoptions"
+        <div id="pie_chart" [updateGeoMap]="true" [chartData]="currentJobsChartData" [chartOptions]="pichartoptions"
              chartType="PieChart" GoogleChart></div>
       </mat-card>
     </div>
+
+    <ng-template #state_not_chosen_panel>
+      <div class="col-sm-5 right-col">
+        <mat-card>
+          <h3 class="no-state-title">Overview</h3>
+          <h4 class="no-state-info">Select a state</h4>
+        </mat-card>
+      </div>
+    </ng-template>
+
   </div>
 </div>
 

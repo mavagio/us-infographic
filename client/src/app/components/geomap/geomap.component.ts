@@ -10,6 +10,12 @@ import {State} from "../../models/state";
   styleUrls: ['./geomap.component.css']
 })
 export class GeomapComponent implements OnInit {
+  @Output('selectedStateEvent') selectedStateEvent = new EventEmitter<string>();
+
+  @Output('stateCodeToNameMappingEvent') stateCodeToNameMappingEvent = new EventEmitter<any>();
+  @Output('stateJobsEvent') stateJobsEvent = new EventEmitter<any>();
+  @Output('statePopulationByAgeGroupEvent') statePopulationByAgeGroupEvent = new EventEmitter<any>();
+  @Output('populationAsAnObjectEvent') populationAsAnObjectEvent = new EventEmitter<any>();
 
   public selectedStateId: string;
   private stateIdName: any[];
@@ -37,11 +43,14 @@ export class GeomapComponent implements OnInit {
         this.populationAsAnObject = GeomapComponent.getAllStatesTotalPopulation(this.statesPopulationByAgeGroups);
         this.statesTotalPopulationByName = this.mapStateNameWithPopulation(this.populationAsAnObject, this.statesNameMapping);
         this.searchComponentStateData = this.mapStateNamePopulationStateCode(this.populationAsAnObject, this.statesNameMapping);
-        console.log(this.statesNameMapping);
-
-        this.stateIdName = this.objectToArray(this.statesNameMapping);
+        this.stateIdName = GeomapComponent.objectToArray(this.statesNameMapping);
         this.stateNameStateCode = GeomapComponent.createStateCodeNameMappingToStateCode(this.statesNameMapping);
-        console.log(this.stateNameStateCode);
+
+        this.stateCodeToNameMappingEvent.emit(this.statesNameMapping);
+        this.stateJobsEvent.emit(this.statesJobs);
+        this.statePopulationByAgeGroupEvent.emit(this.statesPopulationByAgeGroups);
+        this.populationAsAnObjectEvent.emit(this.populationAsAnObject);
+
         this.resetGeoMapData(this.stateIdName);
         this.generateMapOption();
       });
@@ -101,8 +110,10 @@ export class GeomapComponent implements OnInit {
     let allStatePopulations: any = {};
     for (let statePopulation of statesPopulations) {
       let currentState: string = statePopulation['State'];
+      let stateName = statePopulation['State'];
       statePopulation['State'] = 0;
       allStatePopulations[currentState] = this.sumObjectProperties(statePopulation);
+      statePopulation['State'] = stateName;
     }
     return allStatePopulations;
   }
@@ -132,7 +143,7 @@ export class GeomapComponent implements OnInit {
   }
 
 
-  private static sumObjectProperties(obj): number {
+  public static sumObjectProperties(obj): number {
     return Object.keys(obj)
       .reduce(function (sum, key) {
         return sum + parseFloat(obj[key]);
@@ -163,14 +174,13 @@ export class GeomapComponent implements OnInit {
 
   stateSelected(stateId) {
     stateId = stateId.toUpperCase();
-    this.selectedStateId = stateId;
+    this.setSelectedStateId(stateId);
     this.hightlightSelectedState(stateId);
     this.zoomInState(stateId);
   }
 
   private hightlightSelectedState(stateId) {
     this.map_ChartData = [['State', 'Population'], ['US-' + stateId, this.populationAsAnObject[stateId]]];
-    console.log(this.map_ChartData);
     this.renderMap();
   }
 
@@ -182,10 +192,15 @@ export class GeomapComponent implements OnInit {
   public refresh(): void {
     this.resetGeoMapData(this.stateIdName);
     this.generateMapOption();
-    this.selectedStateId = null;
+    this.setSelectedStateId(null);
   }
 
-  private objectToArray(obj: any): any[] {
+  private setSelectedStateId(stateId: string):void {
+    this.selectedStateId = stateId;
+    this.selectedStateEvent.emit(this.selectedStateId);
+  }
+
+  public static objectToArray(obj: any): any[] {
     return Object.keys(obj).map(function (key) {
       return [key, obj[key]];
     });
@@ -199,8 +214,6 @@ export class GeomapComponent implements OnInit {
     }
     return result;
   }
-
-
 
   private renderMap(): void {
     this.updateGeoMap = !this.updateGeoMap;

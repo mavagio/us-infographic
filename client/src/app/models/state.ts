@@ -1,5 +1,6 @@
 export interface State {
   name: string;
-  population: string;
+  population: number;
   id: string;
+  area?: number;
 }

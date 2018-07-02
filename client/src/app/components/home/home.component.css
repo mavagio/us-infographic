@@ -1,5 +1,5 @@
 .right-col mat-card {
-  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .map-action-item button {
@@ -41,4 +41,16 @@
 .wrapper-right-col {
   display: inline-block;
   float: right;
+}
+
+.no-state-title {
+  font-weight: 400;
+  text-align: center;
+  color: #9E9E9E;
+}
+
+.no-state-info {
+  font-weight: 400;
+  text-align: center;
+  color: #9E9E9E;
 }
