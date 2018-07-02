@@ -1,5 +1,5 @@
 The following README provides steps on how to run the code locally.
-
+The application is deployed at https://usinfo.herokuapp.com/
 ## How to run locally
 
 Prerequisites

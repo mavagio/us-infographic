@@ -1,7 +1,7 @@
 {
-  "name": "mean-ts",
+  "name": "us-infographics-server",
   "version": "1.0.0",
-  "description": "- MongoDB - Angular 4 - Express - Node",
+  "description": "Minimal application for US infographics.",
   "main": "index.js",
   "scripts": {
     "test": "cd server && npm run test && cd ../client && npm run lint && cd ../",

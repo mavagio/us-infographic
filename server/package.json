@@ -1,7 +1,7 @@
 {
-  "name": "mean-auth-boilerplate-server",
+  "name": "us-infographics",
   "version": "1.0.0",
-  "description": "Minimal boilerplate for mean architecture using ts",
+  "description": "Us infographics api server.",
   "main": "index.js",
   "scripts": {
     "start": "tsc && set DEBUG=express:* && node src/server.js",
