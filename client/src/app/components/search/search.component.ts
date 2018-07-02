@@ -15,7 +15,6 @@ export class SearchComponent implements OnInit {
 
   @Output('selectedRegionEvent') public selectedRegionEvent = new EventEmitter<string>();
   ngOnInit() {
-    console.log(this.states);
     this.filteredStates = this.stateCtrl.valueChanges
       .pipe(
         startWith(''),
@@ -25,29 +24,6 @@ export class SearchComponent implements OnInit {
 
   stateCtrl = new FormControl();
   filteredStates: Observable<State[]>;
-
-  // states: State[] = [
-  //   {
-  //     name: 'Arkansas',
-  //     population: '2.978M',
-  //     id: 'ak',
-  //   },
-  //   {
-  //     name: 'California',
-  //     population: '39.14M',
-  //     id: 'ca'
-  //   },
-  //   {
-  //     name: 'Florida',
-  //     population: '20.27M',
-  //     id: "fl"
-  //   },
-  //   {
-  //     name: 'Texas',
-  //     population: '27.47M',
-  //     id: 'tx'
-  //   }
-  // ];
 
   public stateClicked(selectedState: State): void {
     this.selectedRegionEvent.emit(selectedState.id);

@@ -49,7 +49,6 @@ export class GoogleChartComponent implements OnInit, OnChanges {
         google.visualization.events.addListener(wrapper, 'select', function () {
           let selection = wrapper.getChart().getSelection()[0];
           let state = chartData[selection.row + 1];
-          console.log(_this.stateNameStateCode);
           _this.selectedRegion.emit(_this.stateNameStateCode[state[0]]);
         });
       }

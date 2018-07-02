@@ -19,6 +19,17 @@ export class HomeComponent implements OnInit {
   private stateArea: any;
 
   private populationStateCodeMapping: object;
+  public currentPopulationChartData: [];
+  public currentJobsChartData = [
+    ['Job', '%'],
+    ["agriculture", 60.0],
+    ["manufacturing", 0.0],
+    ["mining", 2.0],
+    ["trade", 30.0],
+    ["domestic service", 0.0],
+    ["professional service", 10.0]
+  ];
+
 
   constructor(private usInfographicsService: UsInfographicsService) {
   }
@@ -40,28 +51,6 @@ export class HomeComponent implements OnInit {
     });
   }
 
-
-  public currentJobsChartData = [
-    ['Job', '%'],
-    ["agriculture", 60.0],
-    ["manufacturing", 0.0],
-    ["mining", 2.0],
-    ["trade", 30.0],
-    ["domestic service", 0.0],
-    ["professional service", 10.0]
-  ];
-
-  public currentPopulationChartData = [
-    ["Population by age groups", "Population"],
-    ["Under 5 Years", 148323],
-    ["5 to 13 Years", 241326],
-    ["14 to 17 Years", 112801],
-    ["18 to 24 Years", 203097],
-    ["25 to 44 Years", 517154],
-    ["45 to 64 Years", 501604],
-    ["65 Years and Over", 260051],
-  ];
-
   private createPopulationDataForState(stateId): void {
     this.currentPopulationChartData = [["Population by age groups", "Population"], ...(this.allStatesPopulationChartData[stateId])];
   }
@@ -82,7 +71,7 @@ export class HomeComponent implements OnInit {
   };
 
   public stateSelected(stateId: string) {
-    if(stateId === null){
+    if (stateId === null) {
       this.currentState = null;
       return;
     }
@@ -97,7 +86,7 @@ export class HomeComponent implements OnInit {
 
   private generateChartDatas(stateId: string): void {
     this.createPopulationDataForState(stateId);
-    //this.createJobDataForState(stateId);
+    this.createJobDataForState(stateId);
   }
 
   public setStateJobs(stateJobs): void {
@@ -117,17 +106,18 @@ export class HomeComponent implements OnInit {
   }
 
   private generatePopulationChartData(ageGroupPopulation): any[][] {
-    console.log(ageGroupPopulation);
-    ageGroupPopulation = this.populationObjectToArray(ageGroupPopulation);
-    console.log(ageGroupPopulation);
-    return ageGroupPopulation;
+    return this.nestedObjectToArray(ageGroupPopulation, 'State');
   }
 
-  public populationObjectToArray(obj: any): object {
+  private generateJobsChartData(jobsData): any[][] {
+    return this.nestedObjectToArray(jobsData, 'name')
+  }
+
+  public nestedObjectToArray(obj: any, idName: string): object {
     let nestedObject = Object.keys(obj).map(function (key) {
       let objectArray = (GeomapComponent.objectToArray(obj[key]));
       objectArray.shift();
-      return {[obj[key]['State']]: objectArray};
+      return {[obj[key][idName]]: objectArray};
     });
     return this.arrayToObject(nestedObject);
   }
@@ -142,7 +132,5 @@ export class HomeComponent implements OnInit {
     return resultObject;
   }
 
-  private generateJobsChartData(jobsData): any[][] {
-    return [];
-  }
+
 }

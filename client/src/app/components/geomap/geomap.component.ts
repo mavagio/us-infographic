@@ -52,8 +52,6 @@ export class GeomapComponent implements OnInit {
 
         this.unemploymentGeoMapData = GeomapComponent.objectToArray(this.unemploymentData);
 
-        console.log(this.statesTotalPopulationByName);
-
         this.stateCodeToNameMappingEvent.emit(this.statesNameMapping);
         this.stateJobsEvent.emit(this.statesJobs);
         this.statePopulationByAgeGroupEvent.emit(this.statesPopulationByAgeGroups);
