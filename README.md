@@ -12,6 +12,7 @@ Make sure to have the following installed on your machine:
 <a/>
 The following is an Angular 6 single page application, therefore it is possible to only run the front end without the server.
 For that run the following commands:
+
 ```
 cd client; npm i; npm start
 ```
