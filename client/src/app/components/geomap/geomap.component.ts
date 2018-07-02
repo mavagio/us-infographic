@@ -39,6 +39,8 @@ export class GeomapComponent implements OnInit {
   public map_ChartOptions: Object;
   private currentTab = 0;
 
+  private tabsColourPallet = ['#3f51b5', '#B71C1C', '#E65100']
+
   constructor(private usInfographicsService: UsInfographicsService) {
     this.generateDefaultMapOption();
   }
@@ -81,21 +83,21 @@ export class GeomapComponent implements OnInit {
   public setGeoMapToPopulationData() {
     this.generateDefaultMapOption();
     this.map_ChartData = [['State', 'Population'], ...(this.statesTotalPopulationByName)];
-    this.map_ChartOptions['colorAxis'] = {minValue: 1000000, maxValue: 32000000, colors: ['#3f51b5']};
+    this.map_ChartOptions['colorAxis'] = {minValue: 1000000, maxValue: 32000000, colors: [this.tabsColourPallet[this.currentTab]]};
     this.renderMap();
   }
 
   public setGeoMapToUnemploymentData() {
     this.generateDefaultMapOption();
     this.map_ChartData = [['State', 'Unemployment (%)'], ...(this.unemploymentGeoMapData)];
-    this.map_ChartOptions['colorAxis'] = {minValue: 2, maxValue: 7, colors: ['#B71C1C']};
+    this.map_ChartOptions['colorAxis'] = {minValue: 2, maxValue: 7, colors: [this.tabsColourPallet[this.currentTab]]};
     this.renderMap();
   }
 
   public setGeoMapToAreaData() {
     this.generateDefaultMapOption();
     this.map_ChartData = [['State', 'Area (km2)'], ...(this.stateArea)];
-    this.map_ChartOptions['colorAxis'] = {minValue: 2000, maxValue: 1000000, colors: ['#E65100']};
+    this.map_ChartOptions['colorAxis'] = {minValue: 2000, maxValue: 1000000, colors: [this.tabsColourPallet[this.currentTab]]};
     this.renderMap();
   }
 
@@ -210,6 +212,7 @@ export class GeomapComponent implements OnInit {
   stateSelected(stateId) {
     if(stateId === null){
       this.refresh();
+      this.setSelectedStateId(null);
       return;
     }
     stateId = stateId.toUpperCase();
@@ -223,7 +226,7 @@ export class GeomapComponent implements OnInit {
     this.map_ChartOptions['colorAxis'] = {
       minValue: 1,
       maxValue: this.populationAsAnObject[stateId],
-      colors: ['#3f51b5']
+      colors: [this.tabsColourPallet[this.currentTab]],
     };
     this.renderMap();
   }

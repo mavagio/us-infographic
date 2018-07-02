@@ -1,26 +1,19 @@
 <mat-card>
-
   <mat-tab-group mat-stretch-tabs class="centered" (selectedTabChange)="updateTab($event.index)">
     <mat-tab label="Population">
-      <h3 class="h3 map-title">Geomap by population of {{map_ChartOptions['region']}}</h3>
-      <ng-container  *ngIf="true; then info_panel"></ng-container>
+      <h3 *ngIf="!selectedStateId" class="h3 map-title">Geomap by population of {{map_ChartOptions['region']}}</h3>
+      <h3 *ngIf="selectedStateId" class="h3 map-title">Geomap of state {{statesNameMapping[selectedStateId]}}</h3>
     </mat-tab>
     <mat-tab label="Unemployment">
-      <h3 class="h3 map-title">Geomap by unemployment rate of {{map_ChartOptions['region']}}</h3>
-      <ng-container  *ngIf="true; then info_panel"></ng-container>
+      <h3 *ngIf="!selectedStateId" class="h3 map-title">Geomap by unemployment rate of {{map_ChartOptions['region']}}</h3>
+      <h3 *ngIf="selectedStateId" class="h3 map-title">Geomap of state {{statesNameMapping[selectedStateId]}}</h3>
     </mat-tab>
     <mat-tab label="Area">
-      <h3 class="h3 map-title">Geomap by area of {{map_ChartOptions['region']}}</h3>
-      <ng-container  *ngIf="true; then info_panel"></ng-container>
+      <h3 *ngIf="!selectedStateId" class="h3 map-title">Geomap by area of {{map_ChartOptions['region']}}</h3>
+      <h3 *ngIf="selectedStateId" class="h3 map-title">Geomap of state {{statesNameMapping[selectedStateId]}}</h3>
     </mat-tab>
   </mat-tab-group>
-  <ng-template #info_panel>
-    <h4 *ngIf="!selectedStateId" class="h4 map-info">Select a state for more information</h4>
-    <app-search (selectedRegionEvent)="stateSelected($event)" [statesList]="searchComponentStateData"></app-search>
-    <button *ngIf="selectedStateId" color="primary" mat-button (click)="refresh()">
-      <mat-icon aria-label="Example icon-button with a heart icon">refresh</mat-icon>
-    </button>
-  </ng-template>
+  <app-search (selectedRegionEvent)="stateSelected($event)" [statesList]="searchComponentStateData"></app-search>
   <div *ngIf="map_ChartData" id="map_chart" class="map-style" (selectedRegionEvent)="stateSelected($event)"
        [stateNameStateCode]="stateNameStateCode" [updateGeoMap]="updateGeoMap" [chartData]="map_ChartData"
        [chartOptions]="map_ChartOptions" chartType="GeoChart" GoogleChart></div>
