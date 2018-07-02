@@ -10,10 +10,10 @@
         State overview
       </mat-card>
       <mat-card>
-        <div id="pi_chart" [updateGeoMap] = "true" [chartData]="populationData" [chartOptions] = "histogramOptions" chartType="Histogram" GoogleChart></div>
+        <div id="histogram_chart" [updateGeoMap] = "true" [chartData]="populationData" [chartOptions] = "barChartOptions" chartType="Bar" GoogleChart></div>
       </mat-card>
       <mat-card>
-        <div id="pi_chart2" [updateGeoMap] = "true" [chartData]="jobsData" [chartOptions] = "pichartoptions" chartType="PieChart" GoogleChart></div>
+        <div id="pie_chart" [updateGeoMap] = "true" [chartData]="jobsData" [chartOptions] = "pichartoptions" chartType="PieChart" GoogleChart></div>
       </mat-card>
     </div>
   </div>

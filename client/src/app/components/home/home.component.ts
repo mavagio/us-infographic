@@ -27,21 +27,21 @@ export class HomeComponent implements OnInit{
   ];
 
   public populationData = [
-      ["Age group", "Population"],
-      ["Under 5 Years", 148323],
-      ["5 to 13 Years", 241326],
-      ["14 to 17 Years", 112801],
-      ["18 to 24 Years", 203097],
-      ["25 to 44 Years", 517154],
-      ["45 to 64 Years", 501604],
-      ["65 Years and Over", 260051],
+    ["Age groups", "Population"],
+    ["Under 5 Years", 148323],
+    ["5 to 13 Years", 241326],
+    ["14 to 17 Years", 112801],
+    ["18 to 24 Years", 203097],
+    ["25 to 44 Years", 517154],
+    ["45 to 64 Years", 501604],
+    ["65 Years and Over", 260051],
   ];
 
-  public histogramOptions = {
-    title: 'Age groups',
+
+  public barChartOptions = {
+    title: 'Population by age groups',
     legend: { position: 'none' },
     colors: ['green','blue'],
-
   };
 
 
