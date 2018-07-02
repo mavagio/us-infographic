@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {GeomapComponent} from "../geomap/geomap.component";
 import {State} from "../../models/state";
+import {UsInfographicsService} from "../../services/us-infographics.service";
 
 @Component({
   selector: 'app-home',
@@ -15,14 +16,30 @@ export class HomeComponent implements OnInit {
   private allStatesPopulationChartData: any[][];
   private allStatesJobsChartData: any[][];
 
+  private stateArea: any;
+
   private populationStateCodeMapping: object;
 
-  constructor() {
+  constructor(private usInfographicsService: UsInfographicsService) {
   }
 
   ngOnInit() {
+    (async () => {
+      await this.loadInfographicsData().then(() => {
 
+      });
+    })()
   }
+
+  async loadInfographicsData(): Promise<any> {
+    await new Promise<void>(resolve => {
+      this.usInfographicsService.getAreaData().subscribe(data => {
+        this.stateArea = data;
+        resolve();
+      });
+    });
+  }
+
 
   public currentJobsChartData = [
     ['Job', '%'],
@@ -74,7 +91,7 @@ export class HomeComponent implements OnInit {
       name: this.stateCodeToNameMapping[stateId],
       id: stateId.toLowerCase(),
       population: this.populationStateCodeMapping[stateId],
-      area: 423970,
+      area: this.stateArea[this.stateCodeToNameMapping[stateId]],
     };
   }
 

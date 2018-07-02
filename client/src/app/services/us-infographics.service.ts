@@ -11,6 +11,7 @@ export class UsInfographicsService {
 
   private localDataPath = '../assets/data/';
   private jobsDataPath = 'jobs.json';
+  private areaDataPath = 'area.json';
   private statesDataPath = 'states.json';
   private populationDataPath = 'population.json';
 
@@ -28,6 +29,11 @@ export class UsInfographicsService {
   public getStatesData(): Observable<any>  {
     return this.getLocalJSON(this.localDataPath + this.statesDataPath);
   }
+
+  public getAreaData(): Observable<any>  {
+    return this.getLocalJSON(this.localDataPath + this.areaDataPath);
+  }
+
 
   public getJobsData(): Observable<any>  {
     return this.getLocalJSON(this.localDataPath + this.jobsDataPath);
