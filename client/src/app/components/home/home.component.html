@@ -1,5 +1,4 @@
 <div class="container">
-
   <div class="row">
     <div class="col-sm-7">
       <app-geomap (selectedStateEvent)="stateSelected($event)"
@@ -7,6 +6,7 @@
                   (stateCodeToNameMappingEvent)="setStateCodeToNameMapping($event)"
                   (statePopulationByAgeGroupEvent)="setStatePopulationByAgeGroup($event)"
                   (populationAsAnObjectEvent) = "setPopulationStateCodeMapping($event)"
+                  (unemploymentDataEvent) = "setUnemploymentData($event)"
       ></app-geomap>
     </div>
     <ng-container *ngIf="!currentState; then state_not_chosen_panel"></ng-container>
@@ -19,6 +19,8 @@
             <h4 class="overview-info">{{currentState?.population | million}}<span class = "marker">M</span></h4>
             <h5 class="overview-info-name">Area km<sup>2</sup></h5>
             <h4 class="overview-info">{{currentState?.area | thousand}}<span class = "marker">K</span></h4>
+            <h5 class="overview-info-name">Unemployment</h5>
+            <h4 class="overview-info">{{currentState?.unemployment}}<span class = "marker">%</span></h4>
           </div>
           <div class="wrapper-right-col">
             <div class="float-right inline-block">

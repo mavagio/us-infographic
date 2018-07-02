@@ -2,7 +2,7 @@
 
   <mat-tab-group mat-stretch-tabs class="centered" (selectedTabChange)="updateTab($event.index)">
     <mat-tab label="Overview">
-      <h3 class="h3 map-title">Overview of {{map_ChartOptions['region']}}</h3>
+      <h3 class="h3 map-title">Geomap of {{map_ChartOptions['region']}}</h3>
       <ng-container  *ngIf="true; then info_panel"></ng-container>
     </mat-tab>
     <mat-tab label="Population">
@@ -16,7 +16,7 @@
   </mat-tab-group>
   <ng-template #info_panel>
     <h4 *ngIf="!selectedStateId" class="h4 map-info">Select a state for more information</h4>
-    <app-search (selectedRegionEvent)="stateSelected($event)" [states]="searchComponentStateData"></app-search>
+    <app-search (selectedRegionEvent)="stateSelected($event)" [statesList]="searchComponentStateData"></app-search>
     <button *ngIf="selectedStateId" color="primary" mat-button (click)="refresh()">
       <mat-icon aria-label="Example icon-button with a heart icon">refresh</mat-icon>
     </button>

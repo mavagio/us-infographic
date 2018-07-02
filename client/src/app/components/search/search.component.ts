@@ -11,20 +11,20 @@ import {State} from "../../models/state";
 })
 export class SearchComponent implements OnInit {
 
-  @Input('states') public states: State[] = [];
+  @Input('statesList') public statesList: State[] = [];
 
   @Output('selectedRegionEvent') public selectedRegionEvent = new EventEmitter<string>();
+
+  public stateCtrl = new FormControl();
+  public filteredStates: Observable<State[]>;
 
   ngOnInit() {
     this.filteredStates = this.stateCtrl.valueChanges
       .pipe(
         startWith(''),
-        map(state => state ? this._filterStates(state) : this.states.slice())
+        map(state => state ? this._filterStates(state) : this.statesList.slice())
       );
   }
-
-  stateCtrl = new FormControl();
-  filteredStates: Observable<State[]>;
 
   public stateClicked(selectedState: State): void {
     this.selectedRegionEvent.emit(selectedState.id);
@@ -36,6 +36,6 @@ export class SearchComponent implements OnInit {
 
   private _filterStates(value: string): State[] {
     const filterValue = value.toLowerCase();
-    return this.states.filter(state => state.name.toLowerCase().indexOf(filterValue) === 0);
+    return this.statesList.filter(state => state.name.toLowerCase().indexOf(filterValue) === 0);
   }
 }

@@ -16,6 +16,7 @@ export class GeomapComponent implements OnInit {
   @Output('stateJobsEvent') stateJobsEvent = new EventEmitter<any>();
   @Output('statePopulationByAgeGroupEvent') statePopulationByAgeGroupEvent = new EventEmitter<any>();
   @Output('populationAsAnObjectEvent') populationAsAnObjectEvent = new EventEmitter<any>();
+  @Output('unemploymentDataEvent') unemploymentDataEvent = new EventEmitter<any>();
 
   public selectedStateId: string;
   private geoChartDataStateIdName: any[];
@@ -68,6 +69,7 @@ export class GeomapComponent implements OnInit {
         this.stateJobsEvent.emit(this.statesJobs);
         this.statePopulationByAgeGroupEvent.emit(this.statesPopulationByAgeGroups);
         this.populationAsAnObjectEvent.emit(this.populationAsAnObject);
+        this.unemploymentDataEvent.emit(this.unemploymentData);
 
         this.resetGeoMapData(this.geoChartDataStateIdName);
         this.generateDefaultMapOption();
@@ -98,7 +100,7 @@ export class GeomapComponent implements OnInit {
   }
 
   public setGeoMapToUnemploymentData() {
-    this.map_ChartData = [['State', 'Unemployment'], ...(this.unemploymentGeoMapData)];
+    this.map_ChartData = [['State', 'Unemployment (%)'], ...(this.unemploymentGeoMapData)];
     this.map_ChartOptions['colorAxis'] = {minValue: 2, maxValue: 7, colors: ['#B71C1C']};
     this.renderMap();
   }
@@ -138,7 +140,7 @@ export class GeomapComponent implements OnInit {
   }
 
 
-  private mapStateNameWithPopulation(statesPopulations, statesNamesMapping): any[] {
+  private mapStateNameWithPopulation(statesPopulations: any, statesNamesMapping: any): any[] {
     const statesNamesAndPopulations = [];
     for (const stateName in statesNamesMapping) {
       if (statesNamesMapping.hasOwnProperty(stateName)) {
@@ -153,12 +155,12 @@ export class GeomapComponent implements OnInit {
     return statesNamesAndPopulations;
   }
 
-  private mapStateNamePopulationStateCode(statesPopulations, statesNamesMapping): any[] {
-    let statesNamesAndPopulations = [];
-    for (let stateId in statesNamesMapping) {
+  private mapStateNamePopulationStateCode(statesPopulations: any, statesNamesMapping: any): any[] {
+    const statesNamesAndPopulations = [];
+    for (const stateId in statesNamesMapping) {
       if (statesNamesMapping.hasOwnProperty(stateId)) {
-        let stateFullName = statesNamesMapping[stateId]
-        let stateTotalPopulation = statesPopulations[stateId];
+        const stateFullName = statesNamesMapping[stateId]
+        const stateTotalPopulation = statesPopulations[stateId];
         if (typeof  statesPopulations[stateId] === 'undefined') {
           continue;
         }
@@ -173,15 +175,15 @@ export class GeomapComponent implements OnInit {
   }
 
 
-  public static sumObjectProperties(obj): number {
+  public static sumObjectProperties(obj: object): number {
     return Object.keys(obj)
-      .reduce(function (sum, key) {
+      .reduce(function (sum: any, key: any) {
         return sum + parseFloat(obj[key]);
       }, 0);
   }
 
 
-  updateTab(event: number) {
+  public updateTab(event: number) {
     this.currentTab = event;
     this.setSelectedStateId(null);
     switch (event) {

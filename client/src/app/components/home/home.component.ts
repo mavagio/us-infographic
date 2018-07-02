@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit {
   private allStatesJobsChartData: any[][];
 
   private stateArea: any;
+  private unemploymentByState: any;
 
   private populationStateCodeMapping: object;
   public currentPopulationChartData: any;
@@ -68,11 +69,13 @@ export class HomeComponent implements OnInit {
       return;
     }
     this.generateChartDatas(stateId);
+    const stateFullName = this.stateCodeToNameMapping[stateId];
     this.currentState = {
-      name: this.stateCodeToNameMapping[stateId],
+      name: stateFullName,
       id: stateId.toLowerCase(),
       population: this.populationStateCodeMapping[stateId],
-      area: this.stateArea[this.stateCodeToNameMapping[stateId]],
+      area: this.stateArea[stateFullName],
+      unemployment: this.unemploymentByState[stateFullName],
     };
   }
 
@@ -81,20 +84,24 @@ export class HomeComponent implements OnInit {
     this.createJobDataForState(stateId);
   }
 
-  public setStateJobs(stateJobs): void {
+  public setStateJobs(stateJobs: any): void {
     this.allStatesJobsChartData = this.generateJobsChartData(stateJobs);
   }
 
-  public setStatePopulationByAgeGroup(statePopulationByAgeGroup): void {
+  public setStatePopulationByAgeGroup(statePopulationByAgeGroup: any): void {
     this.allStatesPopulationChartData = this.generatePopulationChartData(statePopulationByAgeGroup);
   }
 
-  public setStateCodeToNameMapping(nameMapping): void {
+  public setStateCodeToNameMapping(nameMapping: any): void {
     this.stateCodeToNameMapping = nameMapping;
   }
 
-  public setPopulationStateCodeMapping(populationStateCodeMapping) {
+  public setPopulationStateCodeMapping(populationStateCodeMapping: any) {
     this.populationStateCodeMapping = populationStateCodeMapping;
+  }
+
+  public setUnemploymentData(uemploymentByState: any) {
+    this.unemploymentByState = uemploymentByState;
   }
 
   private generatePopulationChartData(ageGroupPopulation): any {
@@ -115,14 +122,12 @@ export class HomeComponent implements OnInit {
   }
 
   public arrayToObject(array) {
-    let resultObject = {};
+    const resultObject = {};
     for (let i = 0; i < array.length; ++i) {
-      let objectName = Object.keys(array[i])[0];
-      let objectValue = array[i][objectName];
+      const objectName = Object.keys(array[i])[0];
+      const objectValue = array[i][objectName];
       resultObject[objectName] = objectValue;
     }
     return resultObject;
   }
-
-
 }
