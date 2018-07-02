@@ -18,7 +18,7 @@ export class GeomapComponent implements OnInit {
   @Output('populationAsAnObjectEvent') populationAsAnObjectEvent = new EventEmitter<any>();
 
   public selectedStateId: string;
-  private stateIdName: any[];
+  private geoChartDataStateIdName: any[];
   public statesNameMapping: Object;
   public statesPopulationByAgeGroups: Object;
   public statesJobs: Object;
@@ -32,6 +32,7 @@ export class GeomapComponent implements OnInit {
   public searchComponentStateData: State[] = [];
 
   public map_ChartOptions: Object;
+  private currentTab: number = 0;
 
   constructor(private usInfographicsService: UsInfographicsService) {
     this.generateMapOption();
@@ -43,7 +44,7 @@ export class GeomapComponent implements OnInit {
         this.populationAsAnObject = GeomapComponent.getAllStatesTotalPopulation(this.statesPopulationByAgeGroups);
         this.statesTotalPopulationByName = this.mapStateNameWithPopulation(this.populationAsAnObject, this.statesNameMapping);
         this.searchComponentStateData = this.mapStateNamePopulationStateCode(this.populationAsAnObject, this.statesNameMapping);
-        this.stateIdName = GeomapComponent.objectToArray(this.statesNameMapping);
+        this.geoChartDataStateIdName = GeomapComponent.objectToArray(this.statesNameMapping);
         this.stateNameStateCode = GeomapComponent.createStateCodeNameMappingToStateCode(this.statesNameMapping);
 
         console.log(this.statesTotalPopulationByName);
@@ -53,7 +54,7 @@ export class GeomapComponent implements OnInit {
         this.statePopulationByAgeGroupEvent.emit(this.statesPopulationByAgeGroups);
         this.populationAsAnObjectEvent.emit(this.populationAsAnObject);
 
-        this.resetGeoMapData(this.stateIdName);
+        this.resetGeoMapData(this.geoChartDataStateIdName);
         this.generateMapOption();
       });
     })()
@@ -159,10 +160,12 @@ export class GeomapComponent implements OnInit {
   }
 
 
-  onTabChange(event: MatTabChangeEvent) {
-    switch (event.index) {
+  updateTab(event: number) {
+    this.currentTab = event;
+    this.setSelectedStateId(null);
+    switch (event) {
       case 0: { //Overview
-        this.resetGeoMapData(this.stateIdName);
+        this.resetGeoMapData(this.geoChartDataStateIdName);
         this.generateMapOption();
         break;
       }
@@ -189,6 +192,7 @@ export class GeomapComponent implements OnInit {
 
   private hightlightSelectedState(stateId) {
     this.map_ChartData = [['State', 'Population'], ['US-' + stateId, this.populationAsAnObject[stateId]]];
+    this.map_ChartOptions['colorAxis'] = {minValue: 1, maxValue: this.populationAsAnObject[stateId], colors: ['#B92B3D']}
     this.renderMap();
   }
 
@@ -198,9 +202,7 @@ export class GeomapComponent implements OnInit {
   }
 
   public refresh(): void {
-    this.resetGeoMapData(this.stateIdName);
-    this.generateMapOption();
-    this.setSelectedStateId(null);
+    this.updateTab(this.currentTab);
   }
 
   private setSelectedStateId(stateId: string): void {
