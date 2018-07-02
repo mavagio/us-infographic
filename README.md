@@ -22,8 +22,8 @@ Run the code: back end
 Make sure to have the following installed on your machine:
 - mongoDB (make sure to have mongod running locally when running the code on a local machine)
 - Node > 8.9 (!important)
-<a/>
-Install dependencies. From root directory run:
+### Steps
+- Install dependencies. From root directory run:
 ```
 npm run install:dependencies
 ```
