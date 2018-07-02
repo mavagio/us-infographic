@@ -19,7 +19,6 @@ export class GeomapComponent implements OnInit {
   @Output('unemploymentDataEvent') unemploymentDataEvent = new EventEmitter<any>();
 
   public selectedStateId: string;
-  private geoChartDataStateIdName: any[];
   public statesNameMapping: Object;
   public statesPopulationByAgeGroups: Object;
   public statesJobs: Object;
@@ -27,6 +26,8 @@ export class GeomapComponent implements OnInit {
   private populationAsAnObject: Object;
   public updateGeoMap = true;
   public map_ChartData: any;
+
+  public stateArea: any;
 
   public unemploymentData: Object;
   public unemploymentGeoMapData: any;
@@ -48,9 +49,8 @@ export class GeomapComponent implements OnInit {
         this.populationAsAnObject = GeomapComponent.getAllStatesTotalPopulation(this.statesPopulationByAgeGroups);
         this.statesTotalPopulationByName = this.mapStateNameWithPopulation(this.populationAsAnObject, this.statesNameMapping);
         this.searchComponentStateData = this.mapStateNamePopulationStateCode(this.populationAsAnObject, this.statesNameMapping);
-        this.geoChartDataStateIdName = GeomapComponent.objectToArray(this.statesNameMapping);
         this.stateNameStateCode = GeomapComponent.createStateCodeNameMappingToStateCode(this.statesNameMapping);
-
+        this.stateArea = GeomapComponent.objectToArray(this.stateArea);
         this.unemploymentGeoMapData = GeomapComponent.objectToArray(this.unemploymentData);
 
         this.stateCodeToNameMappingEvent.emit(this.statesNameMapping);
@@ -58,9 +58,7 @@ export class GeomapComponent implements OnInit {
         this.statePopulationByAgeGroupEvent.emit(this.statesPopulationByAgeGroups);
         this.populationAsAnObjectEvent.emit(this.populationAsAnObject);
         this.unemploymentDataEvent.emit(this.unemploymentData);
-
-        this.resetGeoMapData(this.geoChartDataStateIdName);
-        this.generateDefaultMapOption();
+        this.setGeoMapToPopulationData();
       });
     })();
   }
@@ -73,7 +71,6 @@ export class GeomapComponent implements OnInit {
       legend: 'none',
       enableRegionInteractivity: 'true',
       sizeAxis: {minSize: 1, maxSize: 10},
-      colorAxis: {minValue: 1000000, maxValue: 32000000, colors: ['#3f51b5']},
       width: '100%',
       aggregationTarget: 'category',
       defaultColor: '#f5f5f5',
@@ -82,21 +79,23 @@ export class GeomapComponent implements OnInit {
   }
 
   public setGeoMapToPopulationData() {
+    this.generateDefaultMapOption();
     this.map_ChartData = [['State', 'Population'], ...(this.statesTotalPopulationByName)];
     this.map_ChartOptions['colorAxis'] = {minValue: 1000000, maxValue: 32000000, colors: ['#3f51b5']};
     this.renderMap();
   }
 
   public setGeoMapToUnemploymentData() {
+    this.generateDefaultMapOption();
     this.map_ChartData = [['State', 'Unemployment (%)'], ...(this.unemploymentGeoMapData)];
     this.map_ChartOptions['colorAxis'] = {minValue: 2, maxValue: 7, colors: ['#B71C1C']};
     this.renderMap();
   }
 
-  public resetGeoMapData(stateFullNames: any) {
-    this.map_ChartData = [
-      ['Code', 'State'], ...stateFullNames
-    ];
+  public setGeoMapToAreaData() {
+    this.generateDefaultMapOption();
+    this.map_ChartData = [['State', 'Area (km2)'], ...(this.stateArea)];
+    this.map_ChartOptions['colorAxis'] = {minValue: 2000, maxValue: 1000000, colors: ['#E65100']};
     this.renderMap();
   }
 
@@ -122,6 +121,12 @@ export class GeomapComponent implements OnInit {
     await new Promise<void>(resolve => {
       this.usInfographicsService.getunemploymentData().subscribe(data => {
         this.unemploymentData = data;
+        resolve();
+      });
+    });
+    await new Promise<void>(resolve => {
+      this.usInfographicsService.getAreaData().subscribe(data => {
+        this.stateArea = data;
         resolve();
       });
     });
@@ -186,19 +191,16 @@ export class GeomapComponent implements OnInit {
     this.currentTab = event;
     this.setSelectedStateId(null);
     switch (event) {
-      case 0: { // Overview
-        this.resetGeoMapData(this.geoChartDataStateIdName);
-        this.generateDefaultMapOption();
-        break;
-      }
-      case 1: { // Population
-        this.generateDefaultMapOption();
+      case 0: { // Population
         this.setGeoMapToPopulationData();
         break;
       }
-      case 2: { // Jobs
-        this.generateDefaultMapOption();
+      case 1: { // Jobs
         this.setGeoMapToUnemploymentData();
+        break;
+      }
+      case 2: { //  Area
+        this.setGeoMapToAreaData();
         break;
       }
 
@@ -206,6 +208,10 @@ export class GeomapComponent implements OnInit {
   }
 
   stateSelected(stateId) {
+    if(stateId === null){
+      this.refresh();
+      return;
+    }
     stateId = stateId.toUpperCase();
     this.setSelectedStateId(stateId);
     this.hightlightSelectedState(stateId);

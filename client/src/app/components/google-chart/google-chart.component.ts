@@ -52,7 +52,11 @@ export class GoogleChartDirective implements OnInit, OnChanges {
         google.visualization.events.addListener(wrapper, 'select', function () {
           const selection = wrapper.getChart().getSelection()[0];
           const state = chartData[selection.row + 1];
-          _this.selectedRegionEvent.emit(_this.stateNameStateCode[state[0]]);
+          if(typeof _this.stateNameStateCode[state[0]] === 'undefined'){
+            _this.selectedRegionEvent.emit(null);
+          }else{
+            _this.selectedRegionEvent.emit(_this.stateNameStateCode[state[0]]);
+          }
         });
       }
 
