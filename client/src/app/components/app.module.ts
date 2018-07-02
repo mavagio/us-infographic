@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, DecimalPipe} from '@angular/common';
 
 import {AppComponent} from './app.component';
 import {TestComponentComponent} from './test-component/test-component.component';
@@ -33,6 +33,8 @@ import {
 } from '@angular/material';
 import { SearchComponent } from './search/search.component';
 import { GeomapComponent } from './geomap/geomap.component';
+import { MillionPipe } from './million.pipe';
+import { ThousandPipe } from './thousand.pipe';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,8 @@ import { GeomapComponent } from './geomap/geomap.component';
     GoogleChartComponent,
     SearchComponent,
     GeomapComponent,
+    MillionPipe,
+    ThousandPipe,
   ],
   imports: [
     BrowserModule,
@@ -117,7 +121,8 @@ import { GeomapComponent } from './geomap/geomap.component';
     RouterModule,
     ApiRequestsService,
     ConfigurationService,
-    AuthGuard
+    AuthGuard,
+    DecimalPipe
   ],
   bootstrap: [AppComponent]
 })

@@ -74,6 +74,7 @@ export class HomeComponent implements OnInit {
       name: this.stateCodeToNameMapping[stateId],
       id: stateId.toLowerCase(),
       population: this.populationStateCodeMapping[stateId],
+      area: 423970,
     };
   }
 

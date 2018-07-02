@@ -46,6 +46,8 @@ export class GeomapComponent implements OnInit {
         this.stateIdName = GeomapComponent.objectToArray(this.statesNameMapping);
         this.stateNameStateCode = GeomapComponent.createStateCodeNameMappingToStateCode(this.statesNameMapping);
 
+        console.log(this.statesTotalPopulationByName);
+
         this.stateCodeToNameMappingEvent.emit(this.statesNameMapping);
         this.stateJobsEvent.emit(this.statesJobs);
         this.statePopulationByAgeGroupEvent.emit(this.statesPopulationByAgeGroups);
@@ -123,6 +125,9 @@ export class GeomapComponent implements OnInit {
     for (let stateName in statesNamesMapping) {
       let stateFullName = statesNamesMapping[stateName]
       let stateTotalPopulation = statesPopulations[stateName];
+      if (typeof statesPopulations[stateName] === 'undefined') {
+        continue;
+      }
       statesNamesAndPopulations.push([stateFullName, stateTotalPopulation]);
     }
     return statesNamesAndPopulations;
@@ -133,6 +138,9 @@ export class GeomapComponent implements OnInit {
     for (let stateId in statesNamesMapping) {
       let stateFullName = statesNamesMapping[stateId]
       let stateTotalPopulation = statesPopulations[stateId];
+      if (typeof  statesPopulations[stateId] === 'undefined') {
+        continue;
+      }
       statesNamesAndPopulations.push({
         'name': stateFullName,
         'population': stateTotalPopulation,
@@ -195,7 +203,7 @@ export class GeomapComponent implements OnInit {
     this.setSelectedStateId(null);
   }
 
-  private setSelectedStateId(stateId: string):void {
+  private setSelectedStateId(stateId: string): void {
     this.selectedStateId = stateId;
     this.selectedStateEvent.emit(this.selectedStateId);
   }
@@ -208,7 +216,7 @@ export class GeomapComponent implements OnInit {
 
   private static createStateCodeNameMappingToStateCode(obj: any): any {
     let result = {};
-    for(let key in obj){
+    for (let key in obj) {
       result[obj[key]] = key;
       result[key] = key;
     }
