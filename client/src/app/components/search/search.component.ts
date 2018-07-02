@@ -14,6 +14,7 @@ export class SearchComponent implements OnInit {
   @Input('states') public states: State[] = [];
 
   @Output('selectedRegionEvent') public selectedRegionEvent = new EventEmitter<string>();
+
   ngOnInit() {
     this.filteredStates = this.stateCtrl.valueChanges
       .pipe(

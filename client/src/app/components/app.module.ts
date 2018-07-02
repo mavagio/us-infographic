@@ -33,8 +33,8 @@ import {
 } from '@angular/material';
 import { SearchComponent } from './search/search.component';
 import { GeomapComponent } from './geomap/geomap.component';
-import { MillionPipe } from './million.pipe';
-import { ThousandPipe } from './thousand.pipe';
+import { MillionPipe } from '../pipes/million.pipe';
+import { ThousandPipe } from '../pipes/thousand.pipe';
 
 @NgModule({
   declarations: [

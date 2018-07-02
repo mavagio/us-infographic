@@ -35,10 +35,22 @@ export class GeomapComponent implements OnInit {
   public searchComponentStateData: State[] = [];
 
   public map_ChartOptions: Object;
-  private currentTab: number = 0;
+  private currentTab = 0;
 
   constructor(private usInfographicsService: UsInfographicsService) {
     this.generateDefaultMapOption();
+  }
+
+  private static getAllStatesTotalPopulation(statesPopulations): any[] {
+    const allStatePopulations: any = {};
+    for (const statePopulation of statesPopulations) {
+      const currentState: string = statePopulation['State'];
+      const stateName = statePopulation['State'];
+      statePopulation['State'] = 0;
+      allStatePopulations[currentState] = this.sumObjectProperties(statePopulation);
+      statePopulation['State'] = stateName;
+    }
+    return allStatePopulations;
   }
 
   ngOnInit() {
@@ -60,7 +72,7 @@ export class GeomapComponent implements OnInit {
         this.resetGeoMapData(this.geoChartDataStateIdName);
         this.generateDefaultMapOption();
       });
-    })()
+    })();
   }
 
   private generateDefaultMapOption(): void {
@@ -125,27 +137,18 @@ export class GeomapComponent implements OnInit {
     });
   }
 
-  private static getAllStatesTotalPopulation(statesPopulations): any[] {
-    let allStatePopulations: any = {};
-    for (let statePopulation of statesPopulations) {
-      let currentState: string = statePopulation['State'];
-      let stateName = statePopulation['State'];
-      statePopulation['State'] = 0;
-      allStatePopulations[currentState] = this.sumObjectProperties(statePopulation);
-      statePopulation['State'] = stateName;
-    }
-    return allStatePopulations;
-  }
 
   private mapStateNameWithPopulation(statesPopulations, statesNamesMapping): any[] {
-    let statesNamesAndPopulations = [];
-    for (let stateName in statesNamesMapping) {
-      let stateFullName = statesNamesMapping[stateName]
-      let stateTotalPopulation = statesPopulations[stateName];
-      if (typeof statesPopulations[stateName] === 'undefined') {
-        continue;
+    const statesNamesAndPopulations = [];
+    for (const stateName in statesNamesMapping) {
+      if (statesNamesMapping.hasOwnProperty(stateName)) {
+        const stateFullName = statesNamesMapping[stateName];
+        const stateTotalPopulation = statesPopulations[stateName];
+        if (typeof statesPopulations[stateName] === 'undefined') {
+          continue;
+        }
+        statesNamesAndPopulations.push([stateFullName, stateTotalPopulation]);
       }
-      statesNamesAndPopulations.push([stateFullName, stateTotalPopulation]);
     }
     return statesNamesAndPopulations;
   }
@@ -153,16 +156,18 @@ export class GeomapComponent implements OnInit {
   private mapStateNamePopulationStateCode(statesPopulations, statesNamesMapping): any[] {
     let statesNamesAndPopulations = [];
     for (let stateId in statesNamesMapping) {
-      let stateFullName = statesNamesMapping[stateId]
-      let stateTotalPopulation = statesPopulations[stateId];
-      if (typeof  statesPopulations[stateId] === 'undefined') {
-        continue;
+      if (statesNamesMapping.hasOwnProperty(stateId)) {
+        let stateFullName = statesNamesMapping[stateId]
+        let stateTotalPopulation = statesPopulations[stateId];
+        if (typeof  statesPopulations[stateId] === 'undefined') {
+          continue;
+        }
+        statesNamesAndPopulations.push({
+          'name': stateFullName,
+          'population': stateTotalPopulation,
+          'id': stateId.toLowerCase(),
+        });
       }
-      statesNamesAndPopulations.push({
-        'name': stateFullName,
-        'population': stateTotalPopulation,
-        'id': stateId.toLowerCase(),
-      });
     }
     return statesNamesAndPopulations;
   }
