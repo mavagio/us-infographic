@@ -1,23 +1,30 @@
 The following README provides steps on how to run the code locally.
-The application is deployed at https://usinfo.herokuapp.com/
+The application is deployed at: https://usinfo.herokuapp.com/
 ## How to run locally
 
-Prerequisites
+
+
+Run the code: front end
 ---------------
+## Prerequisites
 Make sure to have the following installed on your machine:
-- mongoDB (make sure to have mongod running locally when running the code on a local machine)
 - Node > 8.9 (!important)
 
-Run the code front end
----------------
 The following is an Angular 6 single page application, therefore it is possible to only run the front end without the server.
 For that run the following commands:
 ```
 cd client; npm i; npm start
 ```
 
-Run the code back end
+Run the code: back end
 ---------------
+## Prerequisites
+Make sure to have the following installed on your machine:
+- mongoDB (make sure to have mongod running locally when running the code on a local machine)
+- Node > 8.9 (!important)
+
+<a/>
+    
 - Install dependencies. From root directory run:
 ```
 npm run install:dependencies
