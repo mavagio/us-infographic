@@ -14,6 +14,8 @@ export class UsInfographicsService {
   private areaDataPath = 'area.json';
   private statesDataPath = 'states.json';
   private populationDataPath = 'population.json';
+  private unemploymentDataPath = 'unemployment.json';
+
 
   private actionUrl: string;
 
@@ -33,6 +35,12 @@ export class UsInfographicsService {
   public getAreaData(): Observable<any>  {
     return this.getLocalJSON(this.localDataPath + this.areaDataPath);
   }
+
+  public getunemploymentData(): Observable<any>  {
+    return this.getLocalJSON(this.localDataPath + this.unemploymentDataPath);
+  }
+
+
 
 
   public getJobsData(): Observable<any>  {

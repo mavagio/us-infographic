@@ -27,6 +27,9 @@ export class GeomapComponent implements OnInit {
   public updateGeoMap = true;
   public map_ChartData: any;
 
+  public unemploymentData: Object;
+  public unemploymentGeoMapData: any;
+
   public stateNameStateCode: any;
 
   public searchComponentStateData: State[] = [];
@@ -35,7 +38,7 @@ export class GeomapComponent implements OnInit {
   private currentTab: number = 0;
 
   constructor(private usInfographicsService: UsInfographicsService) {
-    this.generateMapOption();
+    this.generateDefaultMapOption();
   }
 
   ngOnInit() {
@@ -47,6 +50,8 @@ export class GeomapComponent implements OnInit {
         this.geoChartDataStateIdName = GeomapComponent.objectToArray(this.statesNameMapping);
         this.stateNameStateCode = GeomapComponent.createStateCodeNameMappingToStateCode(this.statesNameMapping);
 
+        this.unemploymentGeoMapData = GeomapComponent.objectToArray(this.unemploymentData);
+
         console.log(this.statesTotalPopulationByName);
 
         this.stateCodeToNameMappingEvent.emit(this.statesNameMapping);
@@ -55,12 +60,12 @@ export class GeomapComponent implements OnInit {
         this.populationAsAnObjectEvent.emit(this.populationAsAnObject);
 
         this.resetGeoMapData(this.geoChartDataStateIdName);
-        this.generateMapOption();
+        this.generateDefaultMapOption();
       });
     })()
   }
 
-  private generateMapOption(): void {
+  private generateDefaultMapOption(): void {
     this.map_ChartOptions = {
       region: 'US',
       displayMode: 'region',
@@ -68,7 +73,7 @@ export class GeomapComponent implements OnInit {
       legend: 'none',
       enableRegionInteractivity: 'true',
       sizeAxis: {minSize: 1, maxSize: 10},
-      colorAxis: {minValue: 1000000, maxValue: 32000000, colors: ['#B92B3D']},
+      colorAxis: {minValue: 1000000, maxValue: 32000000, colors: ['#3f51b5']},
       width: '100%',
       aggregationTarget: 'category',
       defaultColor: '#f5f5f5',
@@ -76,8 +81,15 @@ export class GeomapComponent implements OnInit {
     this.renderMap();
   }
 
-  public addPopulationDataToGeoMap() {
+  public setGeoMapToPopulationData() {
     this.map_ChartData = [['State', 'Population'], ...(this.statesTotalPopulationByName)];
+    this.map_ChartOptions['colorAxis'] = {minValue: 1000000, maxValue: 32000000, colors: ['#3f51b5']};
+    this.renderMap();
+  }
+
+  public setGeoMapToUnemploymentData() {
+    this.map_ChartData = [['State', 'Unemployment'], ...(this.unemploymentGeoMapData)];
+    this.map_ChartOptions['colorAxis'] = {minValue: 2, maxValue: 7, colors: ['#B71C1C']};
     this.renderMap();
   }
 
@@ -104,6 +116,12 @@ export class GeomapComponent implements OnInit {
     await new Promise<void>(resolve => {
       this.usInfographicsService.getPopulationData().subscribe(data => {
         this.statesPopulationByAgeGroups = data;
+        resolve();
+      });
+    });
+    await new Promise<void>(resolve => {
+      this.usInfographicsService.getunemploymentData().subscribe(data => {
+        this.unemploymentData = data;
         resolve();
       });
     });
@@ -166,17 +184,17 @@ export class GeomapComponent implements OnInit {
     switch (event) {
       case 0: { //Overview
         this.resetGeoMapData(this.geoChartDataStateIdName);
-        this.generateMapOption();
+        this.generateDefaultMapOption();
         break;
       }
       case 1: { //Population
-        this.generateMapOption();
-        this.addPopulationDataToGeoMap();
+        this.generateDefaultMapOption();
+        this.setGeoMapToPopulationData();
         break;
       }
       case 2: { //Jobs
-        this.generateMapOption();
-        this.addPopulationDataToGeoMap();
+        this.generateDefaultMapOption();
+        this.setGeoMapToUnemploymentData();
         break;
       }
 
@@ -192,7 +210,11 @@ export class GeomapComponent implements OnInit {
 
   private hightlightSelectedState(stateId) {
     this.map_ChartData = [['State', 'Population'], ['US-' + stateId, this.populationAsAnObject[stateId]]];
-    this.map_ChartOptions['colorAxis'] = {minValue: 1, maxValue: this.populationAsAnObject[stateId], colors: ['#B92B3D']}
+    this.map_ChartOptions['colorAxis'] = {
+      minValue: 1,
+      maxValue: this.populationAsAnObject[stateId],
+      colors: ['#3f51b5']
+    }
     this.renderMap();
   }
 
