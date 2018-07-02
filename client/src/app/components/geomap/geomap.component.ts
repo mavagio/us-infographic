@@ -192,8 +192,15 @@ export class GeomapComponent implements OnInit {
   }
 
   private static createStateCodeNameMappingToStateCode(obj: any): any {
-    return Object.assign({}, ...Object.entries(obj).map(([a, b]) => ({[b]: a, [a]: a})));
+    let result = {};
+    for(let key in obj){
+      result[obj[key]] = key;
+      result[key] = key;
+    }
+    return result;
   }
+
+
 
   private renderMap(): void {
     this.updateGeoMap = !this.updateGeoMap;
