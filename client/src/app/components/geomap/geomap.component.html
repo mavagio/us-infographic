@@ -16,6 +16,7 @@
   </mat-tab-group>
   <ng-template #info_panel>
     <h4 *ngIf="!selectedStateId" class="h4 map-info">Select a state for more information</h4>
+    <app-search (selectedRegionEvent)="stateSelected($event)" [states]="searchComponentStateData"></app-search>
     <button *ngIf="selectedStateId" color="primary" mat-button (click)="refresh()">
       <mat-icon aria-label="Example icon-button with a heart icon">refresh</mat-icon>
     </button>
@@ -23,7 +24,4 @@
   <div *ngIf="map_ChartData" id="map_chart" class="map-style" (selectedRegionEvent)="stateSelected($event)"
        [stateNameStateCode]="stateNameStateCode" [updateGeoMap]="updateGeoMap" [chartData]="map_ChartData"
        [chartOptions]="map_ChartOptions" chartType="GeoChart" GoogleChart></div>
-  <br/>
-  <app-search (selectedRegionEvent)="stateSelected($event)" [states]="searchComponentStateData"></app-search>
-  <br/>
 </mat-card>

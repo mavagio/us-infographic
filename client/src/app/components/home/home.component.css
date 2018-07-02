@@ -7,3 +7,38 @@
   margin-bottom: 20px;
   width: 100%;
 }
+
+.overview-title {
+  font-weight: 400;
+  color: #616161;
+}
+
+.overview-info-name {
+  font-weight: 300;
+  color: #9E9E9E;
+}
+
+.overview-info {
+  font-weight: 400;
+  color: #757575;
+}
+
+.example-option-img {
+  width: 100%;
+  max-width: 150px;
+}
+
+.inline-block {
+  display: inline-block;
+  position: relative;
+}
+
+.overview-container {
+  width: 100%;
+  white-space: nowrap
+}
+
+.wrapper-right-col {
+  display: inline-block;
+  float: right;
+}

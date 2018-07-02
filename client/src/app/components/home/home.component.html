@@ -1,4 +1,3 @@
-
 <div class="container">
 
   <div class="row">
@@ -7,13 +6,28 @@
     </div>
     <div class="col-sm-5 right-col">
       <mat-card>
-        State overview
+        <h3 class="overview-title">State of North Dakota</h3>
+        <div class="overview-container">
+          <div class="float-left inline-block">
+            <h5 class="overview-info-name">Population</h5>
+            <h4 class="overview-info">350k</h4>
+            <h5 class="overview-info-name">Area</h5>
+            <h4 class="overview-info">400km<sup>2</sup></h4>
+          </div>
+          <div class="wrapper-right-col">
+            <div class="float-right inline-block">
+              <img class="example-option-img" aria-hidden src="http://flags.ox3.in/svg/us/tx.svg">
+            </div>
+          </div>
+        </div>
       </mat-card>
       <mat-card>
-        <div id="histogram_chart" [updateGeoMap] = "true" [chartData]="populationData" [chartOptions] = "barChartOptions" chartType="Bar" GoogleChart></div>
+        <div id="histogram_chart" [updateGeoMap]="true" [chartData]="populationData" [chartOptions]="barChartOptions"
+             chartType="Bar" GoogleChart></div>
       </mat-card>
       <mat-card>
-        <div id="pie_chart" [updateGeoMap] = "true" [chartData]="jobsData" [chartOptions] = "pichartoptions" chartType="PieChart" GoogleChart></div>
+        <div id="pie_chart" [updateGeoMap]="true" [chartData]="jobsData" [chartOptions]="pichartoptions"
+             chartType="PieChart" GoogleChart></div>
       </mat-card>
     </div>
   </div>
